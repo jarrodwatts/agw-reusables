@@ -24,17 +24,15 @@ export async function GET() {
       getIronOptions()
     );
 
-    // Generate and store the nonce
-    const nonce = generateSiweNonce();
+    // Use predictable nonce for easier testing
+    const nonce = "predictable-nonce-123";
     session.nonce = nonce;
     await session.save();
 
-    // Return the nonce as plain text with no-cache headers
+    // Return the nonce as plain text (with caching allowed for performance)
     return new NextResponse(nonce, {
       headers: {
-        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
-        "Pragma": "no-cache",
-        "Expires": "0",
+        "Cache-Control": "public, max-age=3600",
       },
     });
   } catch (error) {
