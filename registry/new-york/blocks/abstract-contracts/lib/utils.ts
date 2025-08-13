@@ -1,16 +1,14 @@
 import type { NetworkId, ContractAddress } from "./types"
 import { ABSTRACT_CONTRACTS } from "./contracts"
-
-export const ABSTRACT_NETWORKS = {
-  MAINNET: 2741 as const,
-  TESTNET: 11124 as const
-} as const
+import { abstract, abstractTestnet } from "viem/chains"
+import { chain } from "@/config/chain"
+import type { Address } from "viem"
 
 export function getNetworkName(chainId: NetworkId): string {
   switch (chainId) {
-    case ABSTRACT_NETWORKS.MAINNET:
+    case abstract.id:
       return "Abstract Mainnet"
-    case ABSTRACT_NETWORKS.TESTNET:  
+    case abstractTestnet.id:
       return "Abstract Testnet"
     default:
       return "Unknown Network"
@@ -18,19 +16,16 @@ export function getNetworkName(chainId: NetworkId): string {
 }
 
 export function isAbstractNetwork(chainId: number): chainId is NetworkId {
-  return chainId === ABSTRACT_NETWORKS.MAINNET || chainId === ABSTRACT_NETWORKS.TESTNET
+  return chainId === abstract.id || chainId === abstractTestnet.id
 }
 
 export function getContractAddress(
-  addresses: ContractAddress, 
+  addresses: ContractAddress,
   chainId: NetworkId,
-  throwOnMissing = false
-): string | undefined {
-  const address = chainId === ABSTRACT_NETWORKS.MAINNET 
-    ? addresses.mainnet 
-    : addresses.testnet
+): Address | undefined {
+  const address = chainId === abstract.id ? addresses.mainnet : addresses.testnet
 
-  if (!address && throwOnMissing) {
+  if (!address) {
     const networkName = getNetworkName(chainId)
     throw new Error(`Contract address not available on ${networkName}`)
   }
@@ -38,28 +33,56 @@ export function getContractAddress(
   return address
 }
 
-export function getContract(contractKey: string, chainId: NetworkId, throwOnMissing = false) {
-  // Find contract in both tokens and dex categories
-  const contract = ABSTRACT_CONTRACTS.tokens[contractKey] || ABSTRACT_CONTRACTS.dex[contractKey]
-  
-  if (!contract) {
-    if (throwOnMissing) {
-      throw new Error(`Contract "${contractKey}" not found`)
+function findContractInCategories(contractKey: string) {
+  for (const category of Object.values(ABSTRACT_CONTRACTS)) {
+    if (typeof category === 'object' && category[contractKey]) {
+      return category[contractKey]
     }
-    return undefined
+  }
+  return null
+}
+
+export function findContract(contractKey: string) {
+  return findContractInCategories(contractKey)
+}
+
+export function getContract(contractKey: string, chainId: NetworkId) {
+  const contract = findContractInCategories(contractKey)
+
+  if (!contract) {
+    throw new Error(`Contract "${contractKey}" not found`)
   }
 
   if (!isAbstractNetwork(chainId)) {
-    if (throwOnMissing) {
-      throw new Error(`Unsupported chain ID: ${chainId}. Only Abstract networks are supported.`)
-    }
-    return undefined
+    throw new Error(`Unsupported chain ID: ${chainId}. Only Abstract networks are supported.`)
   }
 
-  const address = getContractAddress(contract.addresses, chainId, throwOnMissing)
-  
+  const address = getContractAddress(contract.addresses, chainId)
+
   return {
     ...contract,
     address
   }
+}
+
+// Convenience function that uses the current chain configuration
+export function getContractWithCurrentChain(contractKey: string) {
+  return getContract(contractKey, chain.id as NetworkId)
+}
+
+// Convenience function to get contract address with current chain
+export function getContractAddressWithCurrentChain(contractKey: string): Address {
+  const contract = findContractInCategories(contractKey)
+  
+  if (!contract) {
+    throw new Error(`Contract "${contractKey}" not found`)
+  }
+
+  const address = getContractAddress(contract.addresses, chain.id as NetworkId)
+  
+  if (!address) {
+    throw new Error(`Contract address not available for "${contractKey}" on current chain`)
+  }
+
+  return address
 }

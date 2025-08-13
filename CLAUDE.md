@@ -74,3 +74,7 @@ Uses Fumadocs for documentation:
 - **v0 Integration**: Components include "Open in v0" functionality
 - **shadcn CLI Compatible**: All registry items work with standard `shadcn add` commands
 - **Static Serving**: Registry items served as JSON under `/r/[name].json` route
+
+## Important Notes
+- Assume I'm already running `pnpm dev` at all times. You do not need to run it again.
+- Always use pnpm for my commands.

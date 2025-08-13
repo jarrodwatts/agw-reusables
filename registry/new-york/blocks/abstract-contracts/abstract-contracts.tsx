@@ -1,6 +1,14 @@
 // Re-export the contracts configuration and utilities
 export { ABSTRACT_CONTRACTS } from "./lib/contracts"
-export { getContract, getContractAddress, ABSTRACT_NETWORKS } from "./lib/utils"
+export { 
+  getContract, 
+  getContractAddress,
+  getContractWithCurrentChain,
+  getContractAddressWithCurrentChain,
+  findContract,
+  getNetworkName,
+  isAbstractNetwork
+} from "./lib/utils"
 export type { NetworkId, ContractInfo, ContractsConfig } from "./lib/types"
 
 // Export individual ABIs

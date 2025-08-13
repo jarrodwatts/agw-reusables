@@ -1,14 +1,15 @@
+import type { Address, Abi } from "viem"
+
 export interface ContractAddress {
-  mainnet?: string
-  testnet?: string
+  mainnet?: Address
+  testnet?: Address
 }
 
 export interface ContractInfo {
   name: string
   description: string
   addresses: ContractAddress
-  abi?: any[] // ABI will be populated manually
-  category: 'token' | 'dex' | 'utility'
+  abi?: Abi
 }
 
 export interface ContractsConfig {
