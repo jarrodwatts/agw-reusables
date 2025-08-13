@@ -6,6 +6,36 @@
 import * as React from "react"
 
 export const Index: Record<string, any> = {
+  "abstract-contracts": {
+    name: "abstract-contracts",
+    description: "Configuration for common Abstract network contract addresses and ABIs for tokens and DEX infrastructure",
+    type: "registry:lib",
+    registryDependencies: [],
+    files: [{
+      path: "registry/new-york/blocks/abstract-contracts/abstract-contracts.tsx",
+      type: "registry:lib",
+      target: ""
+    }, {
+      path: "registry/new-york/blocks/abstract-contracts/lib/types.ts",
+      type: "registry:lib",
+      target: ""
+    }, {
+      path: "registry/new-york/blocks/abstract-contracts/lib/contracts.ts",
+      type: "registry:lib",
+      target: ""
+    }, {
+      path: "registry/new-york/blocks/abstract-contracts/lib/utils.ts",
+      type: "registry:lib",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york/blocks/abstract-contracts/abstract-contracts.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "abstract-contracts"
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
   "abstract-profile": {
     name: "abstract-profile",
     description: "A profile component that displays user profile pictures from Abstract Portal with tier-based styling and loading states",
@@ -259,6 +289,32 @@ export const Index: Record<string, any> = {
     component: React.lazy(async () => {
       const mod = await import("@/registry/new-york/examples/siwe-button-demo.tsx")
       const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "siwe-button"
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "use-optimistic-write-contract": {
+    name: "use-optimistic-write-contract",
+    description: "An experimental hook for optimistic transaction execution using Abstract's unstable_sendRawTransactionWithDetailedOutput endpoint to get instant transaction feedback",
+    type: "registry:hook",
+    registryDependencies: [],
+    files: [{
+      path: "registry/new-york/blocks/use-optimistic-write-contract/hooks/use-optimistic-write-contract.ts",
+      type: "registry:hook",
+      target: ""
+    }, {
+      path: "registry/new-york/blocks/use-optimistic-write-contract/lib/types.ts",
+      type: "registry:lib",
+      target: ""
+    }, {
+      path: "registry/new-york/blocks/use-optimistic-write-contract/lib/abstract-api.ts",
+      type: "registry:lib",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york/examples/use-optimistic-write-contract-demo.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "use-optimistic-write-contract"
       return { default: mod.default || mod[exportName] }
     }),
     categories: undefined,
