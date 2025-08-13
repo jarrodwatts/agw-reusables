@@ -12,6 +12,7 @@ import SiweButtonDemo from '@/registry/new-york/examples/siwe-button-demo';
 import SessionKeysDemo from '@/registry/new-york/examples/session-keys-demo';
 import PortfolioChartDemo from '@/registry/new-york/examples/portfolio-chart-demo';
 import { DemoCTAOverlay } from '@/components/demo-cta-overlay';
+import AbstractAppVotingDemo from '@/registry/new-york/examples/abstract-app-voting-demo';
 
 function ComponentShowcase() {
   const { address, isConnected } = useAccount();
@@ -57,6 +58,11 @@ function ComponentShowcase() {
       {/* Session Keys - Natural height */}
       <div className="w-full break-inside-avoid mb-4">
         <SessionKeysDemo />
+      </div>
+
+      {/* Abstract App Voting - Natural height */}
+      <div className="w-full break-inside-avoid mb-4">
+        <AbstractAppVotingDemo />
       </div>
 
       {/* Portfolio Chart - Natural height */}

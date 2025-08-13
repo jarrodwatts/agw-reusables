@@ -5,7 +5,7 @@
     "essentials",
     "authentication",
     "session-keys",
-    "wallet-data",
+    "abstract-portal",
     "config",
     "experimental"
   ]

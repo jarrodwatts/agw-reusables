@@ -1,0 +1,39 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "abstract-app-voting",
+    "type": "registry:component",
+    "title": "Abstract App Voting",
+    "description": "A voting button for Abstract apps that checks vote status and submits votes via Abstract Global Wallet",
+    "dependencies": [
+        "@abstract-foundation/agw-react",
+        "@abstract-foundation/agw-client",
+        "wagmi",
+        "viem",
+        "@tanstack/react-query"
+    ],
+    "registryDependencies": [
+        "button"
+    ],
+    "files": [
+        {
+            "path": "registry/new-york/blocks/abstract-voting-button/abstract-voting-button.tsx",
+            "type": "registry:component"
+        },
+        {
+            "path": "registry/new-york/blocks/abstract-voting-button/hooks/use-user-vote-status.ts",
+            "type": "registry:hook"
+        },
+        {
+            "path": "registry/new-york/blocks/abstract-voting-button/hooks/use-vote-for-app.ts",
+            "type": "registry:hook"
+        },
+        {
+            "path": "registry/new-york/blocks/abstract-voting-button/lib/voting-contract.ts",
+            "type": "registry:lib"
+        },
+        {
+            "path": "registry/new-york/blocks/abstract-voting-button/lib/voting-utils.ts",
+            "type": "registry:lib"
+        }
+    ]
+}

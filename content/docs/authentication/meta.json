@@ -2,8 +2,7 @@
   "title": "Authentication",
   "pages": [
     "connect-wallet-button",
-    "siwe-button", 
-    "abstract-profile",
+    "siwe-button",
     "onboarding-dialog"
   ]
 }

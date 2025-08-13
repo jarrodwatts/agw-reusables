@@ -1,0 +1,207 @@
+---
+title: Abstract App Voting
+description: A button that allows users to vote for apps on Abstract with automatic vote status checking and Global Wallet integration.
+---
+
+<ComponentPreview name="abstract-app-voting" />
+
+## Installation
+
+Ensure you have installed and setup the [AGW Provider](/docs/essentials/agw-provider) wrapper component first.
+
+```bash
+npx shadcn@latest add "https://agw-reusables.vercel.app/r/abstract-app-voting.json"
+```
+
+**Note:** Voting is only available on Abstract Mainnet. The component will throw an error if used on other networks.
+
+## Usage
+
+### Basic Usage
+
+```tsx
+import { AbstractVotingButton } from "@/components/abstract-voting-button"
+
+export default function VotingExample() {
+  return (
+    <AbstractVotingButton appId="1" />
+  )
+}
+```
+
+### With Event Handlers
+
+```tsx
+import { AbstractVotingButton } from "@/components/abstract-voting-button"
+import { toast } from "sonner"
+
+export default function VotingWithToast() {
+  return (
+    <AbstractVotingButton 
+      appId="1"
+      onVoteSuccess={() => {
+        toast.success("Vote Submitted!", {
+          description: "Your vote has been recorded.",
+        })
+      }}
+      onVoteError={(error) => {
+        toast.error("Vote Failed", {
+          description: error.message,
+        })
+      }}
+    />
+  )
+}
+```
+
+### Custom Styling
+
+```tsx
+import { AbstractVotingButton } from "@/components/abstract-voting-button"
+
+export default function CustomStyledVoting() {
+  return (
+    <AbstractVotingButton 
+      appId="1"
+      className="bg-purple-600 hover:bg-purple-700"
+    />
+  )
+}
+```
+
+### Custom Button Content
+
+```tsx
+import { AbstractVotingButton } from "@/components/abstract-voting-button"
+
+export default function CustomContentVoting() {
+  return (
+    <AbstractVotingButton appId="1">
+      🚀 Vote for this App
+    </AbstractVotingButton>
+  )
+}
+```
+
+### Using Hooks Directly
+
+<CodeCollapsibleWrapper>
+
+```tsx
+import { useUserVoteStatus, useVoteForApp } from "@/components/abstract-voting-button"
+import { Button } from "@/components/ui/button"
+
+export default function CustomVotingImplementation() {
+  const { hasVoted, isLoading: statusLoading } = useUserVoteStatus({ 
+    appId: "1" 
+  })
+  
+  const { voteForApp, isLoading: voteLoading } = useVoteForApp({
+    onSuccess: () => console.log("Vote submitted!"),
+    onError: (error) => console.error("Vote failed:", error)
+  })
+
+  const isLoading = statusLoading || voteLoading
+
+  return (
+    <Button 
+      onClick={() => voteForApp("1")}
+      disabled={isLoading || hasVoted}
+    >
+      {isLoading ? "Loading..." : hasVoted ? "Voted" : "Vote"}
+    </Button>
+  )
+}
+```
+
+</CodeCollapsibleWrapper>
+
+## What's included
+
+This command installs the following files:
+
+- `/components`
+  - [`abstract-voting-button.tsx`](#abstract-voting-buttontsx) - Main voting button component
+
+- `/hooks`
+  - [`use-user-vote-status.ts`](#use-user-vote-statusts) - Hook to check if user has voted
+  - [`use-vote-for-app.ts`](#use-vote-for-appts) - Hook to submit votes
+
+- `/lib`
+  - [`voting-contract.ts`](#voting-contractts) - Contract address and ABI
+  - [`voting-utils.ts`](#voting-utilsts) - Utility functions
+
+### `abstract-voting-button.tsx`
+
+A comprehensive voting button component with automatic wallet connection, vote status checking, and transaction submission support.
+
+<ComponentSource src="registry/new-york/blocks/abstract-voting-button/abstract-voting-button.tsx" />
+
+#### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `appId` | `string \| number \| bigint` | - | **Required.** The ID of the app to vote for |
+| `className` | `ClassValue` | `undefined` | Custom CSS classes |
+| `children` | `React.ReactNode` | `undefined` | Custom button content |
+| `onVoteSuccess` | `(data: any) => void` | `undefined` | Callback when vote succeeds |
+| `onVoteError` | `(error: Error) => void` | `undefined` | Callback when vote fails |
+| `disabled` | `boolean` | `false` | Disable the button |
+
+### `use-user-vote-status.ts`
+
+Hook that checks if the current user has already voted for a specific app in the current epoch.
+
+<ComponentSource src="registry/new-york/blocks/abstract-voting-button/hooks/use-user-vote-status.ts" />
+
+#### Parameters
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `appId` | `string \| number \| bigint` | - | **Required.** The app ID to check |
+| `enabled` | `boolean` | `true` | Whether to enable the query |
+
+#### Returns
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `hasVoted` | `boolean` | Whether the user has voted for this app |
+| `isLoading` | `boolean` | Whether the check is in progress |
+| `error` | `Error \| null` | Any error that occurred |
+| `refetch` | `() => void` | Function to refetch the status |
+
+### `use-vote-for-app.ts`
+
+Hook that handles submitting votes for apps using Abstract Global Wallet.
+
+<ComponentSource src="registry/new-york/blocks/abstract-voting-button/hooks/use-vote-for-app.ts" />
+
+#### Parameters
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `onSuccess` | `(data: any) => void` | `undefined` | Callback when vote succeeds |
+| `onError` | `(error: Error) => void` | `undefined` | Callback when vote fails |
+
+#### Returns
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `voteForApp` | `(appId: string \| number \| bigint) => Promise<void>` | Function to submit a vote |
+| `isLoading` | `boolean` | Whether a vote is being submitted |
+| `error` | `Error \| null` | Any error that occurred |
+| `data` | `any` | Transaction data from successful vote |
+| `reset` | `() => void` | Reset the mutation state |
+
+### `voting-contract.ts`
+
+Contains the Abstract Voting contract address and ABI for both mainnet and testnet.
+
+<ComponentSource src="registry/new-york/blocks/abstract-voting-button/lib/voting-contract.ts" />
+
+### `voting-utils.ts`
+
+Utility functions for validating app IDs and checking vote status.
+
+<ComponentSource src="registry/new-york/blocks/abstract-voting-button/lib/voting-utils.ts" />
+
