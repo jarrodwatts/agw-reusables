@@ -1,6 +1,6 @@
 ---
 title: Abstract Contracts
-description: Common contract addresses and ABIs for tokens and DEX infrastructure on Abstract
+description: Common contract addresses and ABIs for tokens and DEX infrastructure on Abstract with utility functions for network-aware address resolution
 ---
 
 ## Installation
@@ -12,12 +12,206 @@ npx shadcn@latest add "https://agw-reusables.vercel.app/r/abstract-contracts.jso
 ## Usage
 
 ```tsx
-import { ABSTRACT_CONTRACTS, ABSTRACT_NETWORKS } from "@/components/abstract-contracts"
+import { ABSTRACT_CONTRACTS } from "@/components/abstract-contracts"
 
-// Access contracts directly
-const wethAddress = ABSTRACT_CONTRACTS.tokens.weth.addresses.mainnet
+// Access contract addresses directly
+const wethMainnet = ABSTRACT_CONTRACTS.tokens.weth.addresses.mainnet
 // "0x3439153EB7AF838Ad19d56E1571FBD09333C2809"
 
-const usdcTestnet = ABSTRACT_CONTRACTS.tokens.usdc.addresses.testnet  
+const usdcTestnet = ABSTRACT_CONTRACTS.tokens.usdc.addresses.testnet
 // "0xe4C7fBB0a626ed208021ccabA6Be1566905E2dFc"
 ```
+
+### Network-aware Address Resolution
+
+```tsx
+import { getContractWithCurrentChain, getContractAddressWithCurrentChain } from "@/components/abstract-contracts"
+
+// Get contract info with address for current chain
+const wethContract = getContractWithCurrentChain("weth")
+console.log(wethContract.address) // Automatically uses mainnet or testnet based on config
+
+// Get just the address for current chain
+const usdcAddress = getContractAddressWithCurrentChain("usdc")
+```
+
+### Custom Chain ID
+
+```tsx
+import { getContract, getContractAddress } from "@/components/abstract-contracts"
+import { abstract, abstractTestnet } from "viem/chains"
+
+// Get contract for specific chain
+const wethMainnet = getContract("weth", abstract.id)
+const wethTestnet = getContract("weth", abstractTestnet.id)
+
+// Get just address for specific chain
+const usdcMainnetAddress = getContractAddress(
+  ABSTRACT_CONTRACTS.tokens.usdc.addresses,
+  abstract.id
+)
+```
+
+### Network Utilities
+
+```tsx
+import { isAbstractNetwork, getNetworkName } from "@/components/abstract-contracts"
+
+// Check if chain ID is supported
+if (isAbstractNetwork(chainId)) {
+  const networkName = getNetworkName(chainId)
+  console.log(`Connected to ${networkName}`)
+}
+```
+
+### Using with Viem
+
+<CodeCollapsibleWrapper>
+```tsx
+import { createPublicClient, http, getContract } from "viem"
+import { abstract } from "viem/chains"
+import { ABSTRACT_CONTRACTS, getContractWithCurrentChain } from "@/components/abstract-contracts"
+
+const publicClient = createPublicClient({
+  chain: abstract,
+  transport: http(),
+})
+
+// Using the contract configuration
+const wethContract = getContractWithCurrentChain("weth")
+
+const viemContract = getContract({
+  address: wethContract.address,
+  abi: wethContract.abi,
+  client: publicClient,
+})
+
+// Read contract data
+const wethBalance = await viemContract.read.balanceOf([userAddress])
+const wethSymbol = await viemContract.read.symbol()
+```
+</CodeCollapsibleWrapper>
+
+### Trading with Uniswap
+
+<CodeCollapsibleWrapper>
+```tsx
+import { createWalletClient, custom, parseUnits } from "viem"
+import { getContractWithCurrentChain } from "@/components/abstract-contracts"
+
+// Get Uniswap V2 Router contract
+const routerContract = getContractWithCurrentChain("uniswapV2Router")
+const wethContract = getContractWithCurrentChain("weth")
+const usdcContract = getContractWithCurrentChain("usdc")
+
+const walletClient = createWalletClient({
+  chain: abstract,
+  transport: custom(window.ethereum),
+})
+
+// Swap 1 WETH for USDC
+const amountIn = parseUnits("1", 18) // 1 WETH
+const amountOutMin = parseUnits("3000", 6) // Minimum 3000 USDC
+const deadline = Math.floor(Date.now() / 1000) + 60 * 20 // 20 minutes
+
+const { request } = await publicClient.simulateContract({
+  address: routerContract.address,
+  abi: routerContract.abi,
+  functionName: "swapExactTokensForTokens",
+  args: [
+    amountIn,
+    amountOutMin,
+    [wethContract.address, usdcContract.address],
+    userAddress,
+    deadline,
+  ],
+  account: userAddress,
+})
+
+await walletClient.writeContract(request)
+```
+</CodeCollapsibleWrapper>
+
+### Finding Contracts Dynamically
+
+```tsx
+import { findContract } from "@/components/abstract-contracts"
+
+// Search for contract by key
+const wethInfo = findContract("weth")
+if (wethInfo) {
+  console.log(wethInfo.name) // "Wrapped Ether"
+  console.log(wethInfo.description) // "WETH9 - Wrapped Ether contract for Abstract"
+}
+```
+
+## What's included
+
+This command installs the following files:
+
+- `/components`
+  - [`abstract-contracts.tsx`](#abstract-contractstsx) - Main exports for contracts, utilities, and types
+
+- `/lib`
+  - [`contracts.ts`](#contractsts) - Contract addresses, ABIs, and configuration
+  - [`utils.ts`](#utilsts) - Network-aware utility functions for address resolution
+  - [`types.ts`](#typests) - TypeScript type definitions
+
+### `abstract-contracts.tsx`
+
+A configuration module that exports contract addresses, ABIs, and utility functions for Abstract's token and DEX infrastructure with automatic network detection.
+
+<ComponentSource src="registry/new-york/blocks/abstract-contracts/abstract-contracts.tsx" />
+
+### `contracts.ts`
+
+Contract configuration containing addresses for both Abstract mainnet and testnet, along with complete ABIs for tokens (WETH, USDC, USDT) and Uniswap V2/V3 infrastructure.
+
+<ComponentSource src="registry/new-york/blocks/abstract-contracts/lib/contracts.ts" />
+
+#### Available Contracts
+
+**Tokens:**
+- `weth` - Wrapped Ether (WETH9)
+- `usdc` - USD Coin stablecoin
+- `usdt` - Tether USD stablecoin (mainnet only)
+
+**DEX Infrastructure:**
+- `uniswapV2Factory` - Uniswap V2 factory for pair creation
+- `uniswapV2Router` - Uniswap V2 router for swaps and liquidity
+- `uniswapV3Factory` - Uniswap V3 factory for pool creation
+- `quoterV2` - Uniswap V3 quoter for swap price quotes
+- `swapRouter02` - Uniswap V3 router for executing swaps
+
+### `utils.ts`
+
+Utility functions for network-aware contract address resolution with automatic mainnet/testnet selection and error handling.
+
+<ComponentSource src="registry/new-york/blocks/abstract-contracts/lib/utils.ts" />
+
+#### Utility Functions
+
+| Function | Description |
+| --- | --- |
+| `getContract(key, chainId)` | Get full contract info with address for specific chain |
+| `getContractWithCurrentChain(key)` | Get contract info using current chain configuration |
+| `getContractAddress(addresses, chainId)` | Get contract address for specific chain |
+| `getContractAddressWithCurrentChain(key)` | Get address using current chain configuration |
+| `findContract(key)` | Search for contract by key across all categories |
+| `isAbstractNetwork(chainId)` | Check if chain ID is Abstract mainnet or testnet |
+| `getNetworkName(chainId)` | Get human-readable network name |
+
+### `types.ts`
+
+TypeScript type definitions for contract configuration, network IDs, and utility function options.
+
+<ComponentSource src="registry/new-york/blocks/abstract-contracts/lib/types.ts" />
+
+#### Types
+
+| Type | Description |
+| --- | --- |
+| `ContractInfo` | Contract metadata including name, description, addresses, and ABI |
+| `ContractAddress` | Mapping of network names to contract addresses |
+| `ContractsConfig` | Top-level configuration structure for tokens and DEX contracts |
+| `NetworkId` | Union type for Abstract mainnet (2741) and testnet (11124) |

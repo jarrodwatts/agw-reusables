@@ -1,4 +1,4 @@
-import type { NetworkId, ContractAddress } from "./types"
+import type { NetworkId, ContractAddress, ContractInfo } from "./types"
 import { ABSTRACT_CONTRACTS } from "./contracts"
 import { abstract, abstractTestnet } from "viem/chains"
 import { chain } from "@/config/chain"
@@ -22,7 +22,7 @@ export function isAbstractNetwork(chainId: number): chainId is NetworkId {
 export function getContractAddress(
   addresses: ContractAddress,
   chainId: NetworkId,
-): Address | undefined {
+): Address {
   const address = chainId === abstract.id ? addresses.mainnet : addresses.testnet
 
   if (!address) {
@@ -33,7 +33,7 @@ export function getContractAddress(
   return address
 }
 
-function findContractInCategories(contractKey: string) {
+function findContractInCategories(contractKey: string): ContractInfo | null {
   for (const category of Object.values(ABSTRACT_CONTRACTS)) {
     if (typeof category === 'object' && category[contractKey]) {
       return category[contractKey]
@@ -42,11 +42,11 @@ function findContractInCategories(contractKey: string) {
   return null
 }
 
-export function findContract(contractKey: string) {
+export function findContract(contractKey: string): ContractInfo | null {
   return findContractInCategories(contractKey)
 }
 
-export function getContract(contractKey: string, chainId: NetworkId) {
+export function getContract(contractKey: string, chainId: NetworkId): ContractInfo & { address: Address } {
   const contract = findContractInCategories(contractKey)
 
   if (!contract) {
@@ -66,7 +66,7 @@ export function getContract(contractKey: string, chainId: NetworkId) {
 }
 
 // Convenience function that uses the current chain configuration
-export function getContractWithCurrentChain(contractKey: string) {
+export function getContractWithCurrentChain(contractKey: string): ContractInfo & { address: Address } {
   return getContract(contractKey, chain.id as NetworkId)
 }
 
