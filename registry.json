@@ -402,6 +402,38 @@
           "type": "registry:lib"
         }
       ]
+    },
+    {
+      "name": "nft-gallery",
+      "type": "registry:component",
+      "title": "NFT Gallery",
+      "description": "A responsive NFT gallery component that displays a user's NFTs from the Abstract backend with loading states and customizable layout options",
+      "dependencies": [
+        "@tanstack/react-query",
+        "wagmi",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "card",
+        "badge",
+        "skeleton",
+        "aspect-ratio",
+        "alert"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/nft-gallery/nft-gallery.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/new-york/blocks/nft-gallery/hooks/use-nfts.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "registry/new-york/blocks/nft-gallery/lib/types.ts",
+          "type": "registry:lib"
+        }
+      ]
     }
   ]
 }

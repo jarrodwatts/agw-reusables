@@ -1,0 +1,174 @@
+---
+title: NFT Gallery
+description: A responsive NFT gallery component that displays a user's NFTs from the Abstract backend
+---
+
+<ComponentPreview name="nft-gallery" />
+
+## Installation
+
+```bash
+npx shadcn@latest add "https://agw-reusables.vercel.app/r/nft-gallery.json"
+```
+
+## Usage
+
+### Basic Usage
+
+```tsx
+import { NFTGallery } from "@/components/nft-gallery"
+
+export default function MyNFTs() {
+  const address = "0x1234567890abcdef1234567890abcdef12345678"
+  
+  return (
+    <NFTGallery address={address} />
+  )
+}
+```
+
+### With Connected Wallet
+
+```tsx
+import { NFTGallery } from "@/components/nft-gallery"
+import { useAccount } from "wagmi"
+
+export default function UserNFTs() {
+  const { address } = useAccount()
+  
+  if (!address) {
+    return <p>Connect your wallet to view your NFTs</p>
+  }
+  
+  return (
+    <NFTGallery address={address} />
+  )
+}
+```
+
+### Custom Layout
+
+```tsx
+import { NFTGallery } from "@/components/nft-gallery"
+
+export default function CompactGallery() {
+  const address = "0x1234567890abcdef1234567890abcdef12345678"
+  
+  return (
+    <NFTGallery
+      address={address}
+      columns={{ default: 3, sm: 4, md: 6, lg: 8 }}
+      showCollectionName={false}
+      maxItems={20}
+    />
+  )
+}
+```
+
+### With Floor Prices
+
+```tsx
+import { NFTGallery } from "@/components/nft-gallery"
+
+export default function PremiumGallery() {
+  const address = "0x1234567890abcdef1234567890abcdef12345678"
+  
+  return (
+    <NFTGallery
+      address={address}
+      showCollectionName={true}
+      showFloorPrice={true}
+      className="p-6"
+    />
+  )
+}
+```
+
+### Using the Hook Directly
+
+<CodeCollapsibleWrapper>
+```tsx
+import { useNFTs } from "@/components/nft-gallery"
+import { useAccount } from "wagmi"
+
+export default function CustomNFTDisplay() {
+  const { address } = useAccount()
+  const { data, isLoading, error } = useNFTs(address || "")
+  
+  if (isLoading) return <div>Loading NFTs...</div>
+  if (error) return <div>Error: {error.message}</div>
+  if (!data?.nfts?.length) return <div>No NFTs found</div>
+  
+  return (
+    <div>
+      <h2>Found {data.nfts.length} NFTs</h2>
+      <div className="grid grid-cols-4 gap-4">
+        {data.nfts.map((nft) => (
+          <div key={nft.id}>
+            <img src={nft.imageUrl} alt={nft.name} />
+            <h3>{nft.name}</h3>
+            <p>{nft.collection.name}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+```
+</CodeCollapsibleWrapper>
+
+## What's included
+
+This command installs the following files:
+
+- `/components`
+  - [`nft-gallery.tsx`](#nft-gallerytsx) - Main NFT gallery component with responsive grid layout
+
+- `/hooks`
+- [`use-nfts.ts`](#use-nftsts) - Hook for fetching NFT data from Abstract backend
+
+- `/lib`
+  - [`types.ts`](#typests) - TypeScript definitions for NFT data structures
+
+### nft-gallery.tsx
+
+A responsive NFT gallery component that fetches and displays NFTs from the Abstract backend API with automatic loading states, error handling, and empty state management.
+
+<ComponentSource src="registry/new-york/blocks/nft-gallery/nft-gallery.tsx" />
+
+#### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `address` | `string` | - | Wallet address to fetch NFTs for |
+| `className` | `string` | `undefined` | Additional CSS classes |
+| `columns` | `object` | `{ default: 2, sm: 3, md: 4, lg: 6 }` | Responsive grid column configuration |
+| `showCollectionName` | `boolean` | `true` | Display collection name under each NFT |
+| `showFloorPrice` | `boolean` | `false` | Display floor price when available |
+| `maxItems` | `number` | `undefined` | Limit the number of NFTs displayed |
+
+### use-nfts.ts
+
+A React Query-powered hook for fetching NFT data from the Abstract backend with built-in caching, error handling, and retry logic.
+
+<ComponentSource src="registry/new-york/blocks/nft-gallery/hooks/use-nfts.ts" />
+
+#### Returns
+
+The hook returns a React Query result object with:
+- `data`: NFT data from the API
+- `isLoading`: Loading state
+- `error`: Error object if request fails
+- `refetch`: Function to manually refetch data
+
+### types.ts
+
+TypeScript interfaces for NFT data structures based on the Abstract backend API response format.
+
+<ComponentSource src="registry/new-york/blocks/nft-gallery/lib/types.ts" />
+
+#### Key Types
+
+- `NFT`: Complete NFT object with metadata, media, and collection info
+- `NFTGalleryProps`: Component props interface
+- `NFTGalleryResponse`: API response structure

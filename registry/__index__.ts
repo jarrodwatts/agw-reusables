@@ -6,6 +6,40 @@
 import * as React from "react"
 
 export const Index: Record<string, any> = {
+  "abstract-app-voting": {
+    name: "abstract-app-voting",
+    description: "A voting button for Abstract apps that checks vote status and submits votes via Abstract Global Wallet",
+    type: "registry:component",
+    registryDependencies: ["button"],
+    files: [{
+      path: "registry/new-york/blocks/abstract-voting-button/abstract-voting-button.tsx",
+      type: "registry:component",
+      target: ""
+    }, {
+      path: "registry/new-york/blocks/abstract-voting-button/hooks/use-user-vote-status.ts",
+      type: "registry:hook",
+      target: ""
+    }, {
+      path: "registry/new-york/blocks/abstract-voting-button/hooks/use-vote-for-app.ts",
+      type: "registry:hook",
+      target: ""
+    }, {
+      path: "registry/new-york/blocks/abstract-voting-button/lib/voting-contract.ts",
+      type: "registry:lib",
+      target: ""
+    }, {
+      path: "registry/new-york/blocks/abstract-voting-button/lib/voting-utils.ts",
+      type: "registry:lib",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york/examples/abstract-app-voting-demo.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "abstract-app-voting"
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
   "abstract-contracts": {
     name: "abstract-contracts",
     description: "Configuration for common Abstract network contract addresses and ABIs for tokens and DEX infrastructure",
@@ -40,7 +74,7 @@ export const Index: Record<string, any> = {
     name: "abstract-profile",
     description: "A profile component that displays user profile pictures from Abstract Portal with tier-based styling and loading states",
     type: "registry:component",
-    registryDependencies: ["avatar", "tooltip", "skeleton"],
+    registryDependencies: ["avatar","tooltip","skeleton"],
     files: [{
       path: "registry/new-york/blocks/abstract-profile/abstract-profile.tsx",
       type: "registry:component",
@@ -69,40 +103,6 @@ export const Index: Record<string, any> = {
     component: React.lazy(async () => {
       const mod = await import("@/registry/new-york/examples/abstract-profile-demo.tsx")
       const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "abstract-profile"
-      return { default: mod.default || mod[exportName] }
-    }),
-    categories: undefined,
-    meta: undefined,
-  },
-  "abstract-app-voting": {
-    name: "abstract-app-voting",
-    description: "A voting button for Abstract apps that checks vote status and submits votes via Abstract Global Wallet",
-    type: "registry:component",
-    registryDependencies: ["button"],
-    files: [{
-      path: "registry/new-york/blocks/abstract-voting-button/abstract-voting-button.tsx",
-      type: "registry:component",
-      target: ""
-    }, {
-      path: "registry/new-york/blocks/abstract-voting-button/hooks/use-user-vote-status.ts",
-      type: "registry:hook",
-      target: ""
-    }, {
-      path: "registry/new-york/blocks/abstract-voting-button/hooks/use-vote-for-app.ts",
-      type: "registry:hook",
-      target: ""
-    }, {
-      path: "registry/new-york/blocks/abstract-voting-button/lib/voting-contract.ts",
-      type: "registry:lib",
-      target: ""
-    }, {
-      path: "registry/new-york/blocks/abstract-voting-button/lib/voting-utils.ts",
-      type: "registry:lib",
-      target: ""
-    }],
-    component: React.lazy(async () => {
-      const mod = await import("@/registry/new-york/examples/abstract-voting-button-demo.tsx")
-      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "abstract-app-voting"
       return { default: mod.default || mod[exportName] }
     }),
     categories: undefined,
@@ -138,7 +138,7 @@ export const Index: Record<string, any> = {
     name: "connect-wallet-button",
     description: "A connect wallet button using Abstract Global Wallet with dropdown menu when connected",
     type: "registry:component",
-    registryDependencies: ["button", "dropdown-menu"],
+    registryDependencies: ["button","dropdown-menu"],
     files: [{
       path: "registry/new-york/blocks/connect-wallet-button/connect-wallet-button.tsx",
       type: "registry:component",
@@ -152,11 +152,37 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
+  "nft-gallery": {
+    name: "nft-gallery",
+    description: "A responsive NFT gallery component that displays a user's NFTs from the Abstract backend with loading states and customizable layout options",
+    type: "registry:component",
+    registryDependencies: ["card","badge","skeleton","aspect-ratio","alert"],
+    files: [{
+      path: "registry/new-york/blocks/nft-gallery/nft-gallery.tsx",
+      type: "registry:component",
+      target: ""
+    }, {
+      path: "registry/new-york/blocks/nft-gallery/hooks/use-nft-gallery.ts",
+      type: "registry:hook",
+      target: ""
+    }, {
+      path: "registry/new-york/blocks/nft-gallery/lib/types.ts",
+      type: "registry:lib",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york/examples/nft-gallery-demo.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "nft-gallery"
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
   "onboarding-dialog": {
     name: "onboarding-dialog",
     description: "A configurable multi-step onboarding dialog that guides users through AGW authentication (wallet connection, SIWE, session keys) with progress indication",
     type: "registry:component",
-    registryDependencies: ["dialog", "button", "connect-wallet-button", "siwe-button", "session-keys"],
+    registryDependencies: ["dialog","button","connect-wallet-button","siwe-button","session-keys"],
     files: [{
       path: "registry/new-york/blocks/onboarding-dialog/onboarding-dialog.tsx",
       type: "registry:component",
@@ -178,7 +204,7 @@ export const Index: Record<string, any> = {
     name: "portfolio-chart",
     description: "An interactive area chart that displays Abstract Global Wallet portfolio value over time with multiple time period selections",
     type: "registry:component",
-    registryDependencies: ["chart", "button", "skeleton"],
+    registryDependencies: ["chart","button","skeleton"],
     files: [{
       path: "registry/new-york/blocks/portfolio-chart/portfolio-chart.tsx",
       type: "registry:component",
@@ -204,7 +230,7 @@ export const Index: Record<string, any> = {
     name: "session-keys",
     description: "A comprehensive session key management button that handles creation, validation, and revocation of Abstract Global Wallet session keys",
     type: "registry:component",
-    registryDependencies: ["button", "dropdown-menu"],
+    registryDependencies: ["button","dropdown-menu"],
     files: [{
       path: "registry/new-york/blocks/session-keys/session-key-button.tsx",
       type: "registry:component",
@@ -266,7 +292,7 @@ export const Index: Record<string, any> = {
     name: "siwe-button",
     description: "A streamlined SIWE authentication button that handles wallet connection, message signing, and authentication state",
     type: "registry:component",
-    registryDependencies: ["button", "card", "sonner", "dropdown-menu"],
+    registryDependencies: ["button","card","sonner","dropdown-menu"],
     files: [{
       path: "registry/new-york/blocks/siwe-button/siwe-button.tsx",
       type: "registry:component",
