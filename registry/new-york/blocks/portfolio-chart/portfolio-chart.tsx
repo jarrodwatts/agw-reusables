@@ -28,7 +28,7 @@ const TIME_PERIODS = [
 const chartConfig = {
   value: {
     label: "Portfolio Value",
-    color: "hsl(var(--chart-1))",
+    color: "var(--primary)",
   },
 }
 

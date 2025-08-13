@@ -44,20 +44,13 @@ export function HeroSection() {
 
           <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
             <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Copy. Paste. Ship.
+              Install. Customize. Ship.
             </span>
           </h1>
 
           <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-            Interactive demo of customizable components. See live theme controls below,
-            then{" "}
-            <Link
-              href="/docs"
-              className="font-medium text-primary underline-offset-4 hover:underline"
-            >
-              explore the docs
-            </Link>{" "}
-            to add them to your project.
+            Focus on building the next consumer app, not reinventing the wheel.
+            A collection of React components for the most common crypto patterns.
           </p>
 
           {/* Main CTAs */}
