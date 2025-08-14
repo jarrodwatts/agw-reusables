@@ -22,7 +22,7 @@
     },
     {
       "path": "config/chain.ts",
-      "content": "import { abstract, abstractTestnet } from \"viem/chains\";\n\nexport const chain =\n  process.env.NODE_ENV === \"development\"\n    ? abstractTestnet // Local development: Use Abstract Testnet\n    : abstract; // Production: Use Abstract Mainnet\n",
+      "content": "import { abstractTestnet } from \"viem/chains\";\n\nexport const chain =\n  process.env.NODE_ENV === \"development\"\n    ? abstractTestnet // Local development: Use Abstract Testnet\n    : abstractTestnet; // Production: Use Abstract Testnet (change to mainnet when ready)\n",
       "type": "registry:lib",
       "target": "config/chain.ts"
     },

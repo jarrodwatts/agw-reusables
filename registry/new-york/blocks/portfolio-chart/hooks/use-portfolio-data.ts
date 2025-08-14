@@ -29,7 +29,7 @@ async function fetchPortfolioData(
   }
 
   const response = await fetch(
-    `https://backend.portal.abs.xyz/api/user/${address}/portfolio/value`
+    `/api/user-portfolio/${address}`
   )
 
   if (!response.ok) {

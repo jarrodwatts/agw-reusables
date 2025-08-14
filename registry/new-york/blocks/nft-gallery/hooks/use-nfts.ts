@@ -7,7 +7,7 @@ async function fetchUserNFTs(address: string): Promise<NFTGalleryResponse> {
     }
 
     const response = await fetch(
-        `https://backend.portal.abs.xyz/api/user/${address}/wallet/v2/nfts`
+        `/api/user-nfts/${address}`
     )
 
     if (!response.ok) {

@@ -205,6 +205,10 @@ export const Index: Record<string, any> = {
       path: "registry/new-york/blocks/nft-gallery/lib/types.ts",
       type: "registry:lib",
       target: ""
+    }, {
+      path: "app/api/user-nfts/[address]/route.ts",
+      type: "registry:lib",
+      target: "app/api/user-nfts/[address]/route.ts"
     }],
     component: React.lazy(async () => {
       const mod = await import("@/registry/new-york/examples/nft-gallery-demo.tsx")
@@ -253,6 +257,10 @@ export const Index: Record<string, any> = {
       path: "registry/new-york/blocks/portfolio-chart/lib/portfolio-utils.ts",
       type: "registry:lib",
       target: ""
+    }, {
+      path: "app/api/user-portfolio/[address]/route.ts",
+      type: "registry:lib",
+      target: "app/api/user-portfolio/[address]/route.ts"
     }],
     component: React.lazy(async () => {
       const mod = await import("@/registry/new-york/examples/portfolio-chart-demo.tsx")
