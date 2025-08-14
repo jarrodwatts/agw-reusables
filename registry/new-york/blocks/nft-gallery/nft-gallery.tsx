@@ -159,13 +159,15 @@ export function NFTGallery({
 
   if (!nfts.length) {
     return (
-      <div className={cn("text-center py-8", className)}>
-        <ImageIcon className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-        <h3 className="text-lg font-medium mb-2">No NFTs found</h3>
-        <p className="text-muted-foreground">
-          This wallet doesn't have any NFTs yet.
-        </p>
-      </div>
+      <Card className={cn("w-full", className)}>
+        <CardContent className="text-center py-8">
+          <ImageIcon className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+          <h3 className="text-lg font-medium mb-2">No NFTs found</h3>
+          <p className="text-muted-foreground">
+            This wallet doesn't have any NFTs yet.
+          </p>
+        </CardContent>
+      </Card>
     )
   }
 
