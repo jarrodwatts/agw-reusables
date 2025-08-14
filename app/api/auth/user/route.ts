@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { SessionData } from "../nonce/route";
-import { chain, getIronOptions, SiweConfigurationError } from "@/config/auth";
+import { getIronOptions, SiweConfigurationError } from "@/config/auth";
+import { chain } from "@/config/chain";
 
 /**
  * Sign in with Ethereum - Get the currently authenticated user information.
@@ -54,10 +55,10 @@ export async function GET() {
   } catch (error) {
     // Return configuration errors as special response type
     if (error instanceof SiweConfigurationError) {
-      return NextResponse.json({ 
-        ok: false, 
+      return NextResponse.json({
+        ok: false,
         isConfigurationError: true,
-        message: error.message 
+        message: error.message
       }, { status: 500 });
     }
     // Catch other unexpected errors

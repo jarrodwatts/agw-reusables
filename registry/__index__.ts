@@ -62,11 +62,7 @@ export const Index: Record<string, any> = {
       type: "registry:lib",
       target: ""
     }],
-    component: React.lazy(async () => {
-      const mod = await import("@/registry/new-york/blocks/abstract-contracts/abstract-contracts.tsx")
-      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "abstract-contracts"
-      return { default: mod.default || mod[exportName] }
-    }),
+    component: null,
     categories: undefined,
     meta: undefined,
   },
@@ -152,11 +148,7 @@ export const Index: Record<string, any> = {
       type: "registry:lib",
       target: ".mcp.json"
     }],
-    component: React.lazy(async () => {
-      const mod = await import("@/registry/new-york/lib/CLAUDE.md")
-      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "claude-config"
-      return { default: mod.default || mod[exportName] }
-    }),
+    component: null,
     categories: undefined,
     meta: undefined,
   },
@@ -192,11 +184,7 @@ export const Index: Record<string, any> = {
       type: "registry:lib",
       target: ".cursor/mcp.json"
     }],
-    component: React.lazy(async () => {
-      const mod = await import("@/.cursor/rules/default.mdc")
-      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "cursor-ai-config"
-      return { default: mod.default || mod[exportName] }
-    }),
+    component: null,
     categories: undefined,
     meta: undefined,
   },

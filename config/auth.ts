@@ -1,9 +1,7 @@
 import { SessionOptions } from "iron-session";
-import { chain } from "./chain";
-
 /**
  * Custom error class for SIWE authentication configuration issues.
- * These errors should bubble up to show helpful messages to developers.
+ * These errors bubble up to show helpful messages.
  */
 export class SiweConfigurationError extends Error {
   constructor(message: string) {
@@ -18,7 +16,7 @@ export class SiweConfigurationError extends Error {
  */
 function getSessionPassword(): string {
   const password = process.env.IRON_SESSION_PASSWORD;
-  
+
   if (!password) {
     throw new SiweConfigurationError(
       "IRON_SESSION_PASSWORD environment variable is required for SIWE authentication.\n\n" +
@@ -31,14 +29,14 @@ function getSessionPassword(): string {
       "SECURITY WARNING: Never use a weak or default password in production!"
     );
   }
-  
+
   if (password.length < 32) {
     throw new SiweConfigurationError(
       "IRON_SESSION_PASSWORD must be at least 32 characters long for security.\n" +
       "Generate a new secure password using: openssl rand -base64 32"
     );
   }
-  
+
   return password;
 }
 
@@ -58,6 +56,3 @@ export function getIronOptions(): SessionOptions {
     },
   };
 }
-
-// Re-export chain for authentication context
-export { chain };

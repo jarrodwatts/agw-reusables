@@ -11,7 +11,6 @@ import ConnectWalletButtonDemo from '@/registry/new-york/examples/connect-wallet
 import SiweButtonDemo from '@/registry/new-york/examples/siwe-button-demo';
 import SessionKeysDemo from '@/registry/new-york/examples/session-keys-demo';
 import PortfolioChartDemo from '@/registry/new-york/examples/portfolio-chart-demo';
-import { DemoCTAOverlay } from '@/components/demo-cta-overlay';
 import AbstractAppVotingDemo from '@/registry/new-york/examples/abstract-app-voting-demo';
 import NFTGalleryDemo from '@/registry/new-york/examples/nft-gallery-demo';
 import OnboardingDialogDemo from '@/registry/new-york/examples/onboarding-dialog-demo';
@@ -21,43 +20,6 @@ function ComponentShowcase() {
 
   return (
     <div className="columns-1 lg:columns-2 gap-4 space-y-4">
-      {/* Abstract Profile - Natural height */}
-      <div className="w-full break-inside-avoid mb-4">
-        <AbstractProfileDemo />
-      </div>
-
-      {/* Abstract App Voting - Natural height */}
-      <div className="w-full break-inside-avoid mb-4">
-        <AbstractAppVotingDemo />
-      </div>
-
-      {/* SIWE Authentication - Natural height */}
-      <div className="w-full break-inside-avoid mb-4">
-        <SiweButtonDemo />
-      </div>
-
-      {/* Session Keys - Natural height */}
-      <div className="w-full break-inside-avoid mb-4">
-        <SessionKeysDemo />
-      </div>
-
-      {/* NFT Gallery - Natural height */}
-      <div className="w-full break-inside-avoid mb-4">
-        <NFTGalleryDemo />
-      </div>
-
-      {/* Onboarding Dialog - Natural height */}
-      <div className="w-full break-inside-avoid mb-4">
-        <OnboardingDialogDemo />
-      </div>
-
-      {/* Portfolio Chart - Natural height */}
-      <Card className="w-full break-inside-avoid mb-4">
-        <CardContent>
-          <PortfolioChartDemo />
-        </CardContent>
-      </Card>
-
       {/* Connect Wallet - Enhanced with Profile */}
       <Card className="w-full break-inside-avoid mb-4 relative gap-0">
         <CardHeader className="pb-2">
@@ -83,6 +45,43 @@ function ComponentShowcase() {
           </>
         )}
       </Card>
+
+      {/* Abstract App Voting - Natural height */}
+      <div className="w-full break-inside-avoid mb-4">
+        <AbstractAppVotingDemo />
+      </div>
+
+      {/* Abstract Profile - Natural height */}
+      <div className="w-full break-inside-avoid mb-4">
+        <AbstractProfileDemo />
+      </div>
+
+      {/* SIWE Authentication - Natural height */}
+      <div className="w-full break-inside-avoid mb-4">
+        <SiweButtonDemo />
+      </div>
+
+      {/* NFT Gallery - Natural height */}
+      <div className="w-full break-inside-avoid mb-4">
+        <NFTGalleryDemo />
+      </div>
+
+      {/* Portfolio Chart - Natural height */}
+      <Card className="w-full break-inside-avoid mb-4">
+        <CardContent>
+          <PortfolioChartDemo />
+        </CardContent>
+      </Card>
+
+      {/* Session Keys - Natural height */}
+      <div className="w-full break-inside-avoid mb-4">
+        <SessionKeysDemo />
+      </div>
+
+      {/* Onboarding Dialog - Natural height */}
+      <div className="w-full break-inside-avoid mb-4">
+        <OnboardingDialogDemo />
+      </div>
     </div>
   );
 }

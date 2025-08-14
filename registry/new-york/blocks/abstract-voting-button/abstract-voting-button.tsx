@@ -6,6 +6,8 @@ import { useAccount } from "wagmi"
 import { cn } from "@/lib/utils"
 import { type ClassValue } from "clsx"
 import { useState } from "react"
+import { toast } from "sonner"
+import { abstract } from "viem/chains"
 import { useUserVoteStatus } from "./hooks/use-user-vote-status"
 import { useVoteForApp } from "./hooks/use-vote-for-app"
 
@@ -35,7 +37,7 @@ export function AbstractVotingButton({
   onVoteError,
   disabled = false
 }: AbstractVotingButtonProps) {
-  const { isConnected } = useAccount()
+  const { isConnected, chainId } = useAccount()
   const { login } = useLoginWithAbstract()
   const [isVoting, setIsVoting] = useState(false)
 
@@ -65,6 +67,12 @@ export function AbstractVotingButton({
   const handleVote = async () => {
     if (!isConnected) {
       login()
+      return
+    }
+
+    // Check if user is on testnet and show error toast
+    if (chainId && chainId !== abstract.id) {
+      toast.error("App voting is only supported on Abstract mainnet. Please switch networks to vote.")
       return
     }
 

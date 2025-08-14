@@ -66,6 +66,11 @@ export const Index: Record<string, any> = {`
         componentPath = componentFile ? `@/${componentFile.path}` : ""
       }
 
+      // Only create React.lazy imports for actual component types that have importable files
+      const shouldCreateComponent = componentPath && 
+        (item.type === "registry:component" || item.type === "registry:page" || item.type === "registry:hook") &&
+        componentPath.match(/\.(tsx?|jsx?)$/);
+
       index += `
   "${item.name}": {
     name: "${item.name}",
@@ -78,7 +83,7 @@ export const Index: Record<string, any> = {`
       target: "${file.target ?? ""}"
     }`).join(", ")}],
     component: ${
-      componentPath
+      shouldCreateComponent
         ? `React.lazy(async () => {
       const mod = await import("${componentPath}")
       const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "${item.name}"

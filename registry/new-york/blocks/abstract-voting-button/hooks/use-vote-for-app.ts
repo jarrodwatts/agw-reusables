@@ -1,11 +1,10 @@
 "use client"
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useAccount, useReadContract, useChainId } from "wagmi"
+import { useAccount } from "wagmi"
 import { useAbstractClient } from "@abstract-foundation/agw-react"
 import { ABSTRACT_VOTING_ADDRESS, ABSTRACT_VOTING_ABI } from "../lib/voting-contract"
-import { formatAppId, isValidAppId, VotingConfigurationError } from "../lib/voting-utils"
-import { abstract } from "viem/chains"
+import { formatAppId, isValidAppId } from "../lib/voting-utils"
 
 interface UseVoteForAppProps {
   onSuccess?: (data: any) => void
@@ -26,21 +25,7 @@ interface VoteForAppResult {
 export function useVoteForApp({ onSuccess, onError }: UseVoteForAppProps = {}): VoteForAppResult {
   const { isConnected } = useAccount()
   const { data: abstractClient } = useAbstractClient()
-  const chainId = useChainId()
   const queryClient = useQueryClient()
-
-  // Get vote cost from contract
-  const { data: voteCost, error: voteCostError, isLoading: isVoteCostLoading } = useReadContract({
-    address: ABSTRACT_VOTING_ADDRESS,
-    abi: ABSTRACT_VOTING_ABI,
-    functionName: "voteCost",
-    query: {
-      enabled: isConnected,
-    }
-  })
-
-  // Debug logging
-  console.log("Vote cost query:", { voteCost, voteCostError, isVoteCostLoading, isConnected })
 
   // Create mutation for voting
   const mutation = useMutation({
@@ -49,32 +34,17 @@ export function useVoteForApp({ onSuccess, onError }: UseVoteForAppProps = {}): 
         throw new Error("Wallet not connected")
       }
 
-      if (chainId !== abstract.id) {
-        throw new VotingConfigurationError(
-          "Abstract Voting requires Abstract Mainnet but app is configured for testnet.\n\n" +
-          "To fix this:\n" +
-          "1. Update your AGWProvider to use Abstract Mainnet:\n" +
-          '   import { abstract } from "viem/chains"\n' +
-          '   <AbstractWalletProvider chain={abstract}>\n' +
-          "2. Or remove voting components when using testnet\n\n" +
-          "Note: Voting is only available on Abstract Mainnet (chain ID 2741)"
-        )
-      }
-
       if (!abstractClient) {
         throw new Error("Abstract client not available")
       }
 
       if (!isValidAppId(appId)) {
-        throw new Error("Invalid app ID")
-      }
-
-      if (voteCost === null || voteCost === undefined) {
-        console.error("Vote cost error details:", { voteCostError, isVoteCostLoading })
-        throw new Error(`Unable to get vote cost from contract. Error: ${voteCostError?.message || 'Unknown error'}`)
+        throw new Error(`Invalid app ID for voting. App ID: ${appId}`)
       }
 
       const formattedAppId = formatAppId(appId)
+
+      console.log(abstractClient)
 
       // Submit the vote transaction using Abstract client
       const hash = await abstractClient.writeContract({
@@ -82,7 +52,6 @@ export function useVoteForApp({ onSuccess, onError }: UseVoteForAppProps = {}): 
         abi: ABSTRACT_VOTING_ABI,
         functionName: "voteForApp",
         args: [formattedAppId],
-        value: voteCost,
       })
 
       return hash

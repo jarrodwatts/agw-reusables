@@ -31,7 +31,7 @@ export function formatAppId(appId: string | number | bigint): bigint {
 export function isValidAppId(appId: string | number | bigint): boolean {
   try {
     const id = BigInt(appId)
-    return id > 0n
+    return id > BigInt(0)
   } catch {
     return false
   }

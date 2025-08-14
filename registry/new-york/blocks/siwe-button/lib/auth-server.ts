@@ -1,7 +1,8 @@
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { SessionData } from "@/app/api/auth/nonce/route";
-import { chain, getIronOptions, SiweConfigurationError } from "@/config/auth";
+import { getIronOptions, SiweConfigurationError } from "@/config/auth";
+import { chain } from "@/config/chain";
 import { AuthUser } from "./types";
 
 /**
@@ -113,7 +114,7 @@ export async function getServerAuthUser(): Promise<ServerAuthResult> {
         error: `Configuration error: ${error.message}`
       };
     }
-    
+
     // Handle unexpected errors
     return {
       isAuthenticated: false,
@@ -153,11 +154,11 @@ export async function getServerAuthUser(): Promise<ServerAuthResult> {
  */
 export async function requireServerAuth(): Promise<AuthUser> {
   const auth = await getServerAuthUser();
-  
+
   if (!auth.isAuthenticated || !auth.user) {
     throw new Error(auth.error || "Authentication required");
   }
-  
+
   return auth.user;
 }
 

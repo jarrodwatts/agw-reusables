@@ -1,8 +1,6 @@
 "use client"
 
 import { AbstractVotingButton } from "@/registry/new-york/blocks/abstract-voting-button/abstract-voting-button"
-import { AbstractWalletProvider } from "@abstract-foundation/agw-react"
-import { abstract } from "viem/chains"
 
 const onchainHeroesData = {
     id: "25",
@@ -91,11 +89,7 @@ function VotingCardDemo() {
 
 export default function AbstractAppVotingDemo() {
     return (
-        // Voting only works on Abstract Mainnet (not testnet)
-        // So we wrap it in a mainnet provider below.
-        <AbstractWalletProvider chain={abstract}>
-            <VotingCardDemo />
-        </AbstractWalletProvider>
+        <VotingCardDemo />
     )
 }
 
