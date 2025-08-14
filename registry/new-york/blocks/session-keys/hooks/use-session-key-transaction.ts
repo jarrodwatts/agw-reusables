@@ -92,7 +92,7 @@ export function useSessionKeyTransaction(
       }
 
       const sessionClient = abstractClient.toSessionClient(
-        privateKeyToAccount(sessionData.privateKey as Address),
+        privateKeyToAccount(sessionData.privateKey),
         sessionData.session
       );
 

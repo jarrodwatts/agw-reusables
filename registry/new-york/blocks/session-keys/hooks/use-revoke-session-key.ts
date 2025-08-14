@@ -27,8 +27,7 @@ export function useRevokeSessionKey() {
                 sessions: session
             });
 
-            // The result might be undefined or have different structure
-            console.log("Revoke result:", result);
+            // The result might be undefined or have different structure; keep for potential future use
 
             // Clear local storage after successful revocation
             clearStoredSession(address);

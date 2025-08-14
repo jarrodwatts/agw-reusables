@@ -15,7 +15,7 @@ interface AbstractVotingButtonProps {
   appId: string | number | bigint
   className?: ClassValue
   children?: React.ReactNode
-  onVoteSuccess?: (data: any) => void
+  onVoteSuccess?: (data: `0x${string}`) => void
   onVoteError?: (error: Error) => void
   disabled?: boolean
 }
@@ -59,7 +59,7 @@ export function AbstractVotingButton({
     }
   })
 
-  console.log(error);
+  
 
   const isLoading = isStatusLoading || isVoteLoading || isVoting
 

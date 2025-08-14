@@ -32,7 +32,7 @@ interface StepDefinition {
   id: string
   title: string
   subtitle: string
-  component: React.ComponentType<any>
+  component: React.ComponentType<{ className?: ClassValue }>
   validate: () => boolean
 }
 

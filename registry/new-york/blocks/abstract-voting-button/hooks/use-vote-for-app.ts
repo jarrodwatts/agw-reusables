@@ -7,7 +7,7 @@ import { ABSTRACT_VOTING_ADDRESS, ABSTRACT_VOTING_ABI } from "../lib/voting-cont
 import { formatAppId, isValidAppId } from "../lib/voting-utils"
 
 interface UseVoteForAppProps {
-  onSuccess?: (data: any) => void
+  onSuccess?: (data: `0x${string}`) => void
   onError?: (error: Error) => void
 }
 
@@ -15,7 +15,7 @@ interface VoteForAppResult {
   voteForApp: (appId: string | number | bigint) => Promise<`0x${string}`>
   isLoading: boolean
   error: Error | null
-  data: any
+  data: `0x${string}` | undefined
   reset: () => void
 }
 
@@ -43,8 +43,6 @@ export function useVoteForApp({ onSuccess, onError }: UseVoteForAppProps = {}): 
       }
 
       const formattedAppId = formatAppId(appId)
-
-      console.log(abstractClient)
 
       // Submit the vote transaction using Abstract client
       const hash = await abstractClient.writeContract({

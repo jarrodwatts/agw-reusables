@@ -1,4 +1,4 @@
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 import type { AbstractClient } from "@abstract-foundation/agw-client";
 import { getSessionHash, type SessionConfig } from "@abstract-foundation/agw-client/sessions";
 import { LOCAL_STORAGE_KEY_PREFIX, getEncryptionKey, decrypt } from "./session-encryption-utils";
@@ -7,7 +7,7 @@ import { CALL_POLICIES } from "@/config/session-key-policies";
 
 export interface StoredSessionData {
     session: SessionConfig;
-    privateKey: Address;
+    privateKey: Hex;
 }
 
 /**
@@ -65,7 +65,7 @@ export const getStoredSession = async (
         );
 
         if (storedPoliciesJson !== currentPoliciesJson) {
-            console.log("Call policies have changed, session needs refresh");
+            // Call policies changed; invalidate stored session to force refresh
             return null;
         }
 
