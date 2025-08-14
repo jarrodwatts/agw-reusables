@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "Abstract": {
+      "name": "Abstract",
+      "url": "https://docs.abs.xyz/mcp",
+      "headers": {}
+    }
+  }
+}

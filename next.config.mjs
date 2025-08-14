@@ -9,6 +9,17 @@ const nextConfig = {
   outputFileTracingIncludes: {
     "/*": ["./registry/**/*"],
   },
+  outputFileTracingExcludes: {
+    "/*": ["./.cursor/**/*", "./.claude/**/*"],
+  },
+  turbopack: {
+    rules: {
+      '*.mdc': {
+        loaders: ['raw-loader'],
+        as: '*.js',
+      },
+    },
+  },
   images: {
     remotePatterns: [
       {

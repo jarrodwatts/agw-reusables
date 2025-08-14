@@ -1,6 +1,7 @@
 {
   "title": "Config",
   "pages": [
-    "abstract-contracts"
+    "abstract-contracts",
+    "ai-rule-files"
   ]
 }

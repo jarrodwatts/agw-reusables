@@ -134,6 +134,32 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
+  "claude-config": {
+    name: "claude-config",
+    description: "Claude Code project instructions and MCP server configuration optimized for Abstract ecosystem development with AGW, wagmi, and Next.js",
+    type: "registry:lib",
+    registryDependencies: [],
+    files: [{
+      path: "registry/new-york/lib/CLAUDE.md",
+      type: "registry:lib",
+      target: "CLAUDE.md"
+    }, {
+      path: "registry/new-york/lib/.claude/settings.json",
+      type: "registry:lib",
+      target: ".claude/settings.json"
+    }, {
+      path: "registry/new-york/lib/.mcp.json",
+      type: "registry:lib",
+      target: ".mcp.json"
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york/lib/CLAUDE.md")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "claude-config"
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
   "connect-wallet-button": {
     name: "connect-wallet-button",
     description: "A connect wallet button using Abstract Global Wallet with dropdown menu when connected",
@@ -152,6 +178,28 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
+  "cursor-ai-config": {
+    name: "cursor-ai-config",
+    description: "Cursor project rules and MCP configuration optimized for Abstract ecosystem development with AGW, wagmi, and Next.js",
+    type: "registry:lib",
+    registryDependencies: [],
+    files: [{
+      path: ".cursor/rules/default.mdc",
+      type: "registry:lib",
+      target: ".cursor/rules/default.mdc"
+    }, {
+      path: ".cursor/mcp.json",
+      type: "registry:lib",
+      target: ".cursor/mcp.json"
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/.cursor/rules/default.mdc")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "cursor-ai-config"
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
   "nft-gallery": {
     name: "nft-gallery",
     description: "A responsive NFT gallery component that displays a user's NFTs from the Abstract backend with loading states and customizable layout options",
@@ -162,7 +210,7 @@ export const Index: Record<string, any> = {
       type: "registry:component",
       target: ""
     }, {
-      path: "registry/new-york/blocks/nft-gallery/hooks/use-nft-gallery.ts",
+      path: "registry/new-york/blocks/nft-gallery/hooks/use-nfts.ts",
       type: "registry:hook",
       target: ""
     }, {

@@ -32,7 +32,7 @@ export default function OnboardingDialogDemo() {
   }
 
   return (
-    <div className="space-y-6 max-w-md">
+    <div className="space-y-6 w-full">
       <div className="border rounded-lg p-4 space-y-3">
         <h3 className="font-semibold mb-1">Start Onboarding</h3>
         <p className="text-sm mt-0 text-muted-foreground">

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "claude-config",
+  "type": "registry:lib",
+  "title": "Claude Code Configuration",
+  "description": "Claude Code project instructions and MCP server configuration optimized for Abstract ecosystem development with AGW, wagmi, and Next.js",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york/lib/CLAUDE.md",
+      "content": "# CLAUDE.md\n\nThis file provides guidance to Claude Code when working with code in this Abstract ecosystem project.\n\n## Project Overview\n\nYou are working on an Abstract blockchain application that integrates with Abstract Global Wallet (AGW), wagmi v2, viem v2, Next.js, and shadcn/ui components.\n\n## Key Technologies & Expertise\n\n### Abstract Global Wallet (AGW)\n- Expert in Abstract Global Wallet integration and session key management\n- SIWE (Sign-In with Ethereum) authentication workflows  \n- AGW provider configuration and gasless transaction patterns\n\n### Blockchain & Web3 Stack\n- **wagmi v2**: React hooks for Ethereum with Abstract/ZKsync support\n- **viem v2**: TypeScript interface for Ethereum with `eip712WalletActions()` for ZKsync compatibility\n- **Abstract Network**: ZKsync VM requirements and differences from standard EVM\n- **Session Keys**: Creation, validation, storage, and secure lifecycle management\n\n### Frontend Development\n- **Next.js**: App Router patterns, Server Components, API routes\n- **React**: Functional components, hooks, context patterns, error boundaries\n- **TypeScript**: Strict typing, interfaces, generics, utility types\n- **shadcn/ui**: Component composition, theming, accessibility patterns\n- **Tailwind CSS**: Utility-first styling, responsive design\n\n## Abstract-Specific Patterns\n\n### Chain Configuration\nAlways extend viem clients with `eip712WalletActions()` for ZKsync compatibility:\n\n```ts\nimport { eip712WalletActions } from 'viem/zksync'\n\nconst walletClient = createWalletClient({\n  chain: abstract,\n  transport: custom(window.ethereum),\n}).extend(eip712WalletActions())\n```\n\n### Session Key Management\n- Use session keys for gasless transactions\n- Implement proper key rotation and validation\n- Store session keys securely in encrypted local storage\n\n### Authentication Patterns\n- Always use SIWE for authentication flows\n- Implement proper nonce management\n- Handle session expiration gracefully\n\n## Development Guidelines\n\n- Follow existing patterns in the codebase\n- Use TypeScript strict mode\n- Implement proper error handling and loading states\n- Ensure components are accessible and responsive\n- Test integrations with Abstract testnet before mainnet",
+      "type": "registry:lib",
+      "target": "CLAUDE.md"
+    },
+    {
+      "path": "registry/new-york/lib/.claude/settings.json",
+      "content": "{\n  \"permissions\": {\n    \"allow\": [\n      \"mcp__abstract__search\"\n    ],\n    \"deny\": []\n  },\n  \"enableAllProjectMcpServers\": true\n}",
+      "type": "registry:lib",
+      "target": ".claude/settings.json"
+    },
+    {
+      "path": "registry/new-york/lib/.mcp.json",
+      "content": "{\n  \"mcpServers\": {\n    \"abstract\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@abstractapi/mcp-server\"]\n    }\n  }\n}",
+      "type": "registry:lib",
+      "target": ".mcp.json"
+    }
+  ]
+}
