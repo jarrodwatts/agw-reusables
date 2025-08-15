@@ -42,10 +42,28 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   </Step>
 </Steps>
 
-
 ## Usage
 
-Use the `useOnboarding()` hook to gate actions behind onboarding requirements:
+Use the `ready` flag and `require()` function from the `useOnboarding()` hook to gate actions behind onboarding requirements
+such as requiring a wallet connection, SIWE authentication, or session key creation.
+
+### `ready`
+
+The `ready` flag is `true` when all required steps are completed. Use this flag to conditionally render UI.
+
+```tsx
+const { ready } = useOnboarding({
+  connectWallet: true,
+  signWithEthereum: true,
+  createSessionKey: true,
+});
+
+return <div>{ready ? "Ready" : "Not Ready"}</div>;
+```
+
+### `require()`
+
+Call `require()` before any logic that requires the user to be in a "ready" state (e.g. wallet connected & authenticated).
 
 ```tsx
 "use client"
@@ -55,65 +73,30 @@ import { useOnboarding } from "@/hooks/use-onboarding"
 
 export default function MyComponent() {
   const { ready, require } = useOnboarding({
-    connectWallet: true,
-    signWithEthereum: true,
-    createSessionKey: true,
-  })
+    connectWallet: true,    // Phase 1: Wallet connection
+    signWithEthereum: true, // Phase 2: SIWE authentication
+    createSessionKey: true, // Phase 3: Session key creation
+  });
 
   const handleProtectedAction = () => {
-    // This shows the dialog if not ready, returns false to cancel execution
-    if (!require()) return
+    // This shows the onboarding dialog if your conditions are not met
+    if (!require()) return;
     
     // This code only runs if user is fully onboarded
-    console.log("Action executed!")
+    console.log("Action executed!");
   }
 
   return (
     <Button onClick={handleProtectedAction}>
       {ready ? "Execute Action" : "Complete Onboarding First"}
     </Button>
-  )
+  );
 }
 ```
 
-### Step Configuration
+### `showDialog()`
 
-Configure which onboarding steps are required:
-
-```tsx
-// Just wallet connection
-const { ready, require } = useOnboarding({
-  connectWallet: true,
-})
-
-// Wallet + SIWE authentication  
-const { ready, require } = useOnboarding({
-  connectWallet: true,
-  signWithEthereum: true,
-})
-
-// Full onboarding (all steps)
-const { ready, require } = useOnboarding({
-  connectWallet: true,
-  signWithEthereum: true,
-  createSessionKey: true,
-})
-```
-
-### Hook API
-
-The `useOnboarding()` hook returns the following:
-
-- `ready: boolean` - True when all required steps are completed
-- `pending: boolean` - True when the onboarding dialog is currently open
-- `require(): boolean` - Shows dialog if not ready, returns `true` if ready (use for early returns)
-- `showDialog(): void` - Manually show the onboarding dialog
-
-### Advanced Usage
-
-#### Manual Dialog Control
-
-Use `showDialog()` to manually trigger the onboarding dialog:
+Use `showDialog()` to manually trigger the onboarding dialog.
 
 ```tsx
 const { ready, showDialog } = useOnboarding({
@@ -131,28 +114,11 @@ return (
 )
 ```
 
-#### Reactive UI Based on Status
+## Hook API
 
-Use the `ready` and `pending` flags to create reactive interfaces:
+The `useOnboarding()` hook returns the following:
 
-```tsx
-const { ready, pending, require } = useOnboarding({
-  connectWallet: true,
-  signWithEthereum: true,
-  createSessionKey: true,
-})
-
-return (
-  <Button
-    onClick={() => {
-      if (!require()) return
-      performAction()
-    }}
-    disabled={pending}
-    variant={ready ? "default" : "secondary"}
-  >
-    {pending ? "Onboarding..." : ready ? "Execute Action" : "Setup Required"}
-  </Button>
-)
-```
-
+- `ready: boolean` - True when all required steps are completed
+- `pending: boolean` - True when the onboarding dialog is currently open
+- `require(): boolean` - Shows dialog if not ready, returns `true` if ready (use for early returns)
+- `showDialog(): void` - Manually show the onboarding dialog

@@ -14,7 +14,8 @@
   "registryDependencies": [
     "dropdown-menu",
     "dialog",
-    "button"
+    "button",
+    "sonner"
   ],
   "files": [
     {

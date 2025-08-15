@@ -222,7 +222,7 @@ export const Index: Record<string, any> = {
     name: "onboarding-dialog",
     description: "A configurable multi-step onboarding dialog that guides users through AGW authentication (wallet connection, SIWE, session keys) with progress indication",
     type: "registry:component",
-    registryDependencies: ["dropdown-menu","dialog","button"],
+    registryDependencies: ["dropdown-menu","dialog","button","sonner"],
     files: [{
       path: "registry/new-york/blocks/onboarding-dialog/onboarding-dialog.tsx",
       type: "registry:component",
