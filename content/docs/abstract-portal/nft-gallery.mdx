@@ -125,12 +125,12 @@ This command installs the following files:
   - [`nft-gallery.tsx`](#nft-gallerytsx) - Main NFT gallery component with responsive grid layout
 
 - `/hooks`
-- [`use-nfts.ts`](#use-nftsts) - Hook for fetching NFT data from Abstract backend
+  - [`use-nfts.ts`](#use-nftsts) - Hook for fetching NFT data from Abstract backend
 
 - `/lib`
   - [`types.ts`](#typests) - TypeScript definitions for NFT data structures
 
-### nft-gallery.tsx
+### `nft-gallery.tsx`
 
 A responsive NFT gallery component that fetches and displays NFTs from the Abstract backend API with automatic loading states, error handling, and empty state management.
 
@@ -147,7 +147,7 @@ A responsive NFT gallery component that fetches and displays NFTs from the Abstr
 | `showFloorPrice` | `boolean` | `false` | Display floor price when available |
 | `maxItems` | `number` | `undefined` | Limit the number of NFTs displayed |
 
-### use-nfts.ts
+### `use-nfts.ts`
 
 A React Query-powered hook for fetching NFT data from the Abstract backend with built-in caching, error handling, and retry logic.
 
@@ -161,7 +161,7 @@ The hook returns a React Query result object with:
 - `error`: Error object if request fails
 - `refetch`: Function to manually refetch data
 
-### types.ts
+### `types.ts`
 
 TypeScript interfaces for NFT data structures based on the Abstract backend API response format.
 
