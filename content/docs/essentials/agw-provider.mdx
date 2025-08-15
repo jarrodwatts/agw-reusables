@@ -17,14 +17,19 @@ npx shadcn@latest add "https://agw-reusables.vercel.app/r/agw-provider.json"
 
 Wrap your entire application with the AGW Provider in your root layout:
 
-```tsx title="app/layout.tsx" showLineNumbers {1,6,10}
+```tsx title="app/layout.tsx" showLineNumbers {1,2,8,11,13}
 import { NextAbstractWalletProvider } from "@/components/agw-provider";
+import { Toaster } from "@/components/ui/sonner";
+import "./globals.css";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <NextAbstractWalletProvider>
-        <body>{children}</body>
+        <body>
+          {children}
+          <Toaster />
+        </body>
       </NextAbstractWalletProvider>
     </html>
   );
@@ -45,67 +50,16 @@ This command installs the following files:
 
 A wrapper component to enable the use of AGW Reusables, wagmi, and Tanstack Query.
 
-<CodeCollapsibleWrapper>
-```tsx
-"use client";
-
-import { AbstractWalletProvider } from "@abstract-foundation/agw-react";
-import { QueryClient } from "@tanstack/react-query";
-import { chain } from "@/config/chain";
-
-const queryClient = new QueryClient();
-
-export function NextAbstractWalletProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <AbstractWalletProvider chain={chain} queryClient={queryClient}>
-      {children}
-    </AbstractWalletProvider>
-  );
-}
-```
-</CodeCollapsibleWrapper>
+<ComponentSource src="registry/new-york/blocks/agw-provider/agw-provider.tsx" />
 
 ### `chain.ts`
 
 A global `chain` constant that is environmentally aware and automatically selects the appropriate Abstract network (testnet for local development, mainnet for production).
 
-<CodeCollapsibleWrapper>
-
-```ts
-import { abstract, abstractTestnet } from "viem/chains";
-
-export const chain =
-  process.env.NODE_ENV === "development"
-    ? abstractTestnet // Local development: Use Abstract Testnet
-    : abstract; // Production: Use Abstract Mainnet
-```
-</CodeCollapsibleWrapper>
+<ComponentSource src="config/chain.ts" />
 
 ### `viem-clients.ts`
 
 Viem includes [ZK stack specific extensions](https://viem.sh/zksync); this file contains a pre-configured Viem public and wallet client configurations for ZK Stack chains (i.e., Abstract).
 
-<CodeCollapsibleWrapper>
-
-```ts
-import { createPublicClient, createWalletClient, http } from "viem";
-import { eip712WalletActions, publicActionsL2 } from "viem/zksync";
-import { chain } from "./chain";
-
-// Global Viem public client instance
-export const publicClient = createPublicClient({
-    chain: chain,
-    transport: http(),
-}).extend(publicActionsL2());
-
-// Global Viem wallet client instance
-export const walletClient = createWalletClient({
-    chain: chain,
-    transport: http(),
-}).extend(eip712WalletActions());
-```
-</CodeCollapsibleWrapper>
+<ComponentSource src="config/viem-clients.ts" />
