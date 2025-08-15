@@ -222,14 +222,10 @@ export const Index: Record<string, any> = {
     name: "onboarding-dialog",
     description: "A configurable multi-step onboarding dialog that guides users through AGW authentication (wallet connection, SIWE, session keys) with progress indication",
     type: "registry:component",
-    registryDependencies: ["dialog","button","connect-wallet-button","siwe-button","session-keys"],
+    registryDependencies: ["dialog","button"],
     files: [{
       path: "registry/new-york/blocks/onboarding-dialog/onboarding-dialog.tsx",
       type: "registry:component",
-      target: ""
-    }, {
-      path: "registry/new-york/blocks/onboarding-dialog/hooks/use-require-onboarding.ts",
-      type: "registry:hook",
       target: ""
     }],
     component: React.lazy(async () => {
@@ -338,6 +334,10 @@ export const Index: Record<string, any> = {
     type: "registry:component",
     registryDependencies: ["button","card","sonner","dropdown-menu"],
     files: [{
+      path: "registry/new-york/blocks/connect-wallet-button/connect-wallet-button.tsx",
+      type: "registry:component",
+      target: ""
+    }, {
       path: "registry/new-york/blocks/siwe-button/siwe-button.tsx",
       type: "registry:component",
       target: ""
@@ -385,10 +385,6 @@ export const Index: Record<string, any> = {
       path: "app/api/auth/logout/route.ts",
       type: "registry:page",
       target: "app/api/auth/logout/route.ts"
-    }, {
-      path: "registry/new-york/blocks/connect-wallet-button/connect-wallet-button.tsx",
-      type: "registry:component",
-      target: ""
     }],
     component: React.lazy(async () => {
       const mod = await import("@/registry/new-york/examples/siwe-button-demo.tsx")

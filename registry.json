@@ -15,10 +15,7 @@
         "viem",
         "@tanstack/react-query"
       ],
-      "registryDependencies": [
-        "button",
-        "dropdown-menu"
-      ],
+      "registryDependencies": ["button", "dropdown-menu"],
       "files": [
         {
           "path": "registry/new-york/blocks/connect-wallet-button/connect-wallet-button.tsx",
@@ -31,16 +28,8 @@
       "type": "registry:component",
       "title": "Abstract Profile",
       "description": "A profile component that displays user profile pictures from Abstract Portal with tier-based styling and loading states",
-      "dependencies": [
-        "@tanstack/react-query",
-        "wagmi",
-        "viem"
-      ],
-      "registryDependencies": [
-        "avatar",
-        "tooltip",
-        "skeleton"
-      ],
+      "dependencies": ["@tanstack/react-query", "wagmi", "viem"],
+      "registryDependencies": ["avatar", "tooltip", "skeleton"],
       "files": [
         {
           "path": "registry/new-york/blocks/abstract-profile/abstract-profile.tsx",
@@ -81,9 +70,7 @@
         "viem",
         "@tanstack/react-query"
       ],
-      "registryDependencies": [
-        "sonner"
-      ],
+      "registryDependencies": ["sonner"],
       "files": [
         {
           "path": "registry/new-york/blocks/agw-provider/agw-provider.tsx",
@@ -113,16 +100,15 @@
         "@tanstack/react-query",
         "sonner"
       ],
-      "registryDependencies": [
-        "button",
-        "card",
-        "sonner",
-        "dropdown-menu"
-      ],
+      "registryDependencies": ["button", "card", "sonner", "dropdown-menu"],
       "envVars": {
         "IRON_SESSION_PASSWORD": ""
       },
       "files": [
+        {
+          "path": "registry/new-york/blocks/connect-wallet-button/connect-wallet-button.tsx",
+          "type": "registry:component"
+        },
         {
           "path": "registry/new-york/blocks/siwe-button/siwe-button.tsx",
           "type": "registry:component"
@@ -176,10 +162,6 @@
           "path": "app/api/auth/logout/route.ts",
           "type": "registry:page",
           "target": "app/api/auth/logout/route.ts"
-        },
-        {
-          "path": "registry/new-york/blocks/connect-wallet-button/connect-wallet-button.tsx",
-          "type": "registry:component"
         }
       ]
     },
@@ -196,10 +178,7 @@
         "@tanstack/react-query",
         "sonner"
       ],
-      "registryDependencies": [
-        "button",
-        "dropdown-menu"
-      ],
+      "registryDependencies": ["button", "dropdown-menu"],
       "files": [
         {
           "path": "registry/new-york/blocks/session-keys/session-key-button.tsx",
@@ -265,21 +244,11 @@
         "viem",
         "@tanstack/react-query"
       ],
-      "registryDependencies": [
-        "dialog",
-        "button",
-        "connect-wallet-button",
-        "siwe-button",
-        "session-keys"
-      ],
+      "registryDependencies": ["dialog", "button"],
       "files": [
         {
           "path": "registry/new-york/blocks/onboarding-dialog/onboarding-dialog.tsx",
           "type": "registry:component"
-        },
-        {
-          "path": "registry/new-york/blocks/onboarding-dialog/hooks/use-require-onboarding.ts",
-          "type": "registry:hook"
         }
       ]
     },
@@ -288,16 +257,8 @@
       "type": "registry:component",
       "title": "Portfolio Chart",
       "description": "An interactive area chart that displays Abstract Global Wallet portfolio value over time with multiple time period selections",
-      "dependencies": [
-        "@tanstack/react-query",
-        "recharts",
-        "date-fns"
-      ],
-      "registryDependencies": [
-        "chart",
-        "button",
-        "skeleton"
-      ],
+      "dependencies": ["@tanstack/react-query", "recharts", "date-fns"],
+      "registryDependencies": ["chart", "button", "skeleton"],
       "files": [
         {
           "path": "registry/new-york/blocks/portfolio-chart/portfolio-chart.tsx",
@@ -323,11 +284,7 @@
       "type": "registry:hook",
       "title": "Optimistic Transactions",
       "description": "An experimental hook for optimistic transaction execution using Abstract's unstable_sendRawTransactionWithDetailedOutput endpoint to get instant transaction feedback",
-      "dependencies": [
-        "wagmi",
-        "viem",
-        "@tanstack/react-query"
-      ],
+      "dependencies": ["wagmi", "viem", "@tanstack/react-query"],
       "registryDependencies": [],
       "files": [
         {
@@ -382,9 +339,7 @@
         "viem",
         "@tanstack/react-query"
       ],
-      "registryDependencies": [
-        "button"
-      ],
+      "registryDependencies": ["button"],
       "files": [
         {
           "path": "registry/new-york/blocks/abstract-voting-button/abstract-voting-button.tsx",
@@ -413,11 +368,7 @@
       "type": "registry:component",
       "title": "NFT Gallery",
       "description": "A responsive NFT gallery component that displays a user's NFTs from the Abstract backend with loading states and customizable layout options",
-      "dependencies": [
-        "@tanstack/react-query",
-        "wagmi",
-        "lucide-react"
-      ],
+      "dependencies": ["@tanstack/react-query", "wagmi", "lucide-react"],
       "registryDependencies": [
         "card",
         "badge",

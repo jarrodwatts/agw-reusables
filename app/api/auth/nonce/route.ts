@@ -1,3 +1,4 @@
+// Hello world
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { generateSiweNonce } from "viem/siwe";
@@ -32,19 +33,23 @@ export async function GET() {
     // Return the nonce as plain text with no-cache headers
     return new NextResponse(nonce, {
       headers: {
-        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
-        "Pragma": "no-cache",
-        "Expires": "0",
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
       },
     });
   } catch (error) {
     // Return configuration errors as special response type
     if (error instanceof SiweConfigurationError) {
-      return NextResponse.json({ 
-        ok: false, 
-        isConfigurationError: true,
-        message: error.message 
-      }, { status: 500 });
+      return NextResponse.json(
+        {
+          ok: false,
+          isConfigurationError: true,
+          message: error.message,
+        },
+        { status: 500 }
+      );
     }
     // Catch other unexpected errors
     return NextResponse.json({ ok: false }, { status: 500 });
