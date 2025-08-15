@@ -50,9 +50,10 @@ Follow the steps below to start using AGW Reusables.
   <Step step={3} title="Wrap your application">
     Wrap your application in the installed component inside `app/layout.tsx`.
 
-    ```tsx title="app/layout.tsx" showLineNumbers {1,2,7,10,12}
+    ```tsx title="app/layout.tsx" showLineNumbers {1,2,8,11,13}
     import { NextAbstractWalletProvider } from "@/components/agw-provider";
     import { Toaster } from "@/components/ui/sonner";
+    import "./globals.css";
 
     export default function RootLayout({ children }: { children: React.ReactNode }) {
       return (

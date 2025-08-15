@@ -17,7 +17,7 @@
   "files": [
     {
       "path": "registry/new-york/blocks/agw-provider/agw-provider.tsx",
-      "content": "\"use client\";\n\nimport { AbstractWalletProvider } from \"@abstract-foundation/agw-react\";\nimport { QueryClient } from \"@tanstack/react-query\";\nimport { chain } from \"@/config/chain\";\n\nconst queryClient = new QueryClient();\n\nexport function NextAbstractWalletProvider({\n  children,\n}: {\n  children: React.ReactNode;\n}) {\n  return (\n    <AbstractWalletProvider chain={chain} queryClient={queryClient}>\n      {children}\n    </AbstractWalletProvider>\n  );\n}\n",
+      "content": "\"use client\";\n\nimport { AbstractWalletProvider } from \"@abstract-foundation/agw-react\";\nimport { QueryClient } from \"@tanstack/react-query\";\nimport { chain } from \"@/config/chain\";\n\n// Learn more about Tanstack Query: https://tanstack.com/query/latest/docs/framework/react/reference/QueryClientProvider\n// We create our own query client to share our app's query cache with the AbstractWalletProvider.\nconst queryClient = new QueryClient();\n\nexport function NextAbstractWalletProvider({\n  children,\n}: {\n  children: React.ReactNode;\n}) {\n  return (\n    // \"chain\" is loaded from @config/chain and is environment-aware.\n    // i.e. use testnet or mainnet based on the environment (local, dev, prod)\n    <AbstractWalletProvider chain={chain} queryClient={queryClient}>\n      {children}\n    </AbstractWalletProvider>\n  );\n}\n",
       "type": "registry:component"
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "path": "config/viem-clients.ts",
-      "content": "import { createPublicClient, createWalletClient, http } from \"viem\";\nimport { eip712WalletActions, publicActionsL2 } from \"viem/zksync\";\nimport { chain } from \"./chain\";\n\n// Global Viem public client instance\nexport const publicClient = createPublicClient({\n    chain: chain,\n    transport: http(),\n}).extend(publicActionsL2());\n\n// Global Viem wallet client instance\nexport const walletClient = createWalletClient({\n    chain: chain,\n    transport: http(),\n}).extend(eip712WalletActions());\n",
+      "content": "import { createPublicClient, createWalletClient, http } from \"viem\";\nimport { eip712WalletActions, publicActionsL2 } from \"viem/zksync\";\nimport { chain } from \"./chain\";\n\n/**\n * Viem specific extensions for ZK Stack chains (i.e., Abstract)\n * Learn more: https://viem.sh/zksync/\n */\n\n// Global Viem public client instance\nexport const publicClient = createPublicClient({\n  chain: chain,\n  transport: http(),\n}).extend(publicActionsL2());\n\n// Global Viem wallet client instance\nexport const walletClient = createWalletClient({\n  chain: chain,\n  transport: http(),\n}).extend(eip712WalletActions());\n",
       "type": "registry:lib",
       "target": "config/viem-clients.ts"
     }

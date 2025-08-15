@@ -70,7 +70,7 @@
     },
     {
       "path": "config/viem-clients.ts",
-      "content": "import { createPublicClient, createWalletClient, http } from \"viem\";\nimport { eip712WalletActions, publicActionsL2 } from \"viem/zksync\";\nimport { chain } from \"./chain\";\n\n// Global Viem public client instance\nexport const publicClient = createPublicClient({\n    chain: chain,\n    transport: http(),\n}).extend(publicActionsL2());\n\n// Global Viem wallet client instance\nexport const walletClient = createWalletClient({\n    chain: chain,\n    transport: http(),\n}).extend(eip712WalletActions());\n",
+      "content": "import { createPublicClient, createWalletClient, http } from \"viem\";\nimport { eip712WalletActions, publicActionsL2 } from \"viem/zksync\";\nimport { chain } from \"./chain\";\n\n/**\n * Viem specific extensions for ZK Stack chains (i.e., Abstract)\n * Learn more: https://viem.sh/zksync/\n */\n\n// Global Viem public client instance\nexport const publicClient = createPublicClient({\n  chain: chain,\n  transport: http(),\n}).extend(publicActionsL2());\n\n// Global Viem wallet client instance\nexport const walletClient = createWalletClient({\n  chain: chain,\n  transport: http(),\n}).extend(eip712WalletActions());\n",
       "type": "registry:lib",
       "target": "config/viem-clients.ts"
     },
