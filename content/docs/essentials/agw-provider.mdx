@@ -3,6 +3,8 @@ title: AGW Provider
 description: An AGW wrapper component for using AGW Reusables.
 ---
 
+_**Note**: this component is already configured as part of the [installation process](/docs)._
+
 The **AGW Provider** wraps your application in the required provider components ([wagmi](https://wagmi.sh/react/api/WagmiProvider) and [Tanstack Query](https://tanstack.com/query/latest/docs/framework/react/reference/QueryClientProvider)) required to use the features of AGW Reusables.
 
 ## Installation
@@ -35,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 This command installs the following files:
 
 - [`components/agw-provider.tsx`](#agw-providertsx) - The main AGW Provider component
-- [`config/chain.ts`](#chaints) - Chain configuration for Abstract networks
+- [`config/chain.ts`](#chaints) - Environment-aware chain configuration for Abstract networks
 - [`config/viem-clients.ts`](#viem-clientsts) - Pre-configured Viem clients for ZK Stack chains
 
 
@@ -85,7 +87,7 @@ export const chain =
 
 ### `viem-clients.ts`
 
-Pre-configured Viem public and wallet client setup for Abstract (ZK Stack):
+Viem includes [ZK stack specific extensions](https://viem.sh/zksync); this file contains a pre-configured Viem public and wallet client configurations for ZK Stack chains (i.e., Abstract).
 
 <CodeCollapsibleWrapper>
 
