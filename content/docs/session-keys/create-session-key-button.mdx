@@ -3,15 +3,30 @@ title: Session Key Management
 description: A comprehensive session key management system that enables transactions without requiring user signatures for each transaction.
 ---
 
+import { Steps, Step } from "@/components/ui/steps";
+
 <ComponentPreview name="session-keys" />
 
 ## Installation
 
 Ensure you have installed and setup the [AGW Provider](/docs/essentials/agw-provider) wrapper component first.
 
-```bash
-npx shadcn@latest add "https://agw-reusables.vercel.app/r/session-keys.json"
-```
+<Steps className="mt-8">
+  <Step step={1} title="Install the component">
+    ```bash
+    npx shadcn@latest add "https://agw-reusables.vercel.app/r/session-keys.json"
+    ```
+  </Step>
+
+  <Step
+    step={2}
+    title="Configure session policies for your contracts"
+  >
+    Update your session key policies in <a href="#session-key-policiests">`session-key-policies.ts`</a> with your contract addresses, function selectors, limits, and any constraints.
+    
+    For mainnet deployments, review the <a className="underline" href="https://docs.abs.xyz/abstract-global-wallet/session-keys/going-to-production" target="_blank" rel="noreferrer">going to production</a> guide for policy restrictions, requirements, and best practices.
+  </Step>
+</Steps>
 
 ## Usage
 

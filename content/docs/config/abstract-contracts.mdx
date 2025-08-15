@@ -11,10 +11,11 @@ npx shadcn@latest add "https://agw-reusables.vercel.app/r/abstract-contracts.jso
 
 ## Usage
 
+Access contract addresses directly.
+
 ```tsx
 import { ABSTRACT_CONTRACTS } from "@/components/abstract-contracts"
 
-// Access contract addresses directly
 const wethMainnet = ABSTRACT_CONTRACTS.tokens.weth.addresses.mainnet
 // "0x3439153EB7AF838Ad19d56E1571FBD09333C2809"
 
@@ -22,20 +23,9 @@ const usdcTestnet = ABSTRACT_CONTRACTS.tokens.usdc.addresses.testnet
 // "0xe4C7fBB0a626ed208021ccabA6Be1566905E2dFc"
 ```
 
-### Network-aware Address Resolution
+### Specify chain ID
 
-```tsx
-import { getContractWithCurrentChain, getContractAddressWithCurrentChain } from "@/components/abstract-contracts"
-
-// Get contract info with address for current chain
-const wethContract = getContractWithCurrentChain("weth")
-console.log(wethContract.address) // Automatically uses mainnet or testnet based on config
-
-// Get just the address for current chain
-const usdcAddress = getContractAddressWithCurrentChain("usdc")
-```
-
-### Custom Chain ID
+Get contract addresses for mainnet or testnet specifically.
 
 ```tsx
 import { getContract, getContractAddress } from "@/components/abstract-contracts"
@@ -52,7 +42,24 @@ const usdcMainnetAddress = getContractAddress(
 )
 ```
 
+### Network-aware Address Resolution
+
+Get contract addresses for the currently active chain (mainnet or testnet).
+
+```tsx
+// Automatically uses mainnet or testnet based on config
+import { getContractWithCurrentChain, getContractAddressWithCurrentChain } from "@/components/abstract-contracts"
+
+const wethContract = getContractWithCurrentChain("weth") // Returns an object with metadata
+console.log(wethContract.address) // Just the contract address
+
+// Get just the contract address for the current chain
+const usdcAddress = getContractAddressWithCurrentChain("usdc")
+```
+
 ### Network Utilities
+
+Some helpful utility functions for working with Abstract networks.
 
 ```tsx
 import { isAbstractNetwork, getNetworkName } from "@/components/abstract-contracts"
@@ -61,87 +68,6 @@ import { isAbstractNetwork, getNetworkName } from "@/components/abstract-contrac
 if (isAbstractNetwork(chainId)) {
   const networkName = getNetworkName(chainId)
   console.log(`Connected to ${networkName}`)
-}
-```
-
-### Using with Viem
-
-<CodeCollapsibleWrapper>
-```tsx
-import { createPublicClient, http, getContract } from "viem"
-import { abstract } from "viem/chains"
-import { ABSTRACT_CONTRACTS, getContractWithCurrentChain } from "@/components/abstract-contracts"
-
-const publicClient = createPublicClient({
-  chain: abstract,
-  transport: http(),
-})
-
-// Using the contract configuration
-const wethContract = getContractWithCurrentChain("weth")
-
-const viemContract = getContract({
-  address: wethContract.address,
-  abi: wethContract.abi,
-  client: publicClient,
-})
-
-// Read contract data
-const wethBalance = await viemContract.read.balanceOf([userAddress])
-const wethSymbol = await viemContract.read.symbol()
-```
-</CodeCollapsibleWrapper>
-
-### Trading with Uniswap
-
-<CodeCollapsibleWrapper>
-```tsx
-import { createWalletClient, custom, parseUnits } from "viem"
-import { getContractWithCurrentChain } from "@/components/abstract-contracts"
-
-// Get Uniswap V2 Router contract
-const routerContract = getContractWithCurrentChain("uniswapV2Router")
-const wethContract = getContractWithCurrentChain("weth")
-const usdcContract = getContractWithCurrentChain("usdc")
-
-const walletClient = createWalletClient({
-  chain: abstract,
-  transport: custom(window.ethereum),
-})
-
-// Swap 1 WETH for USDC
-const amountIn = parseUnits("1", 18) // 1 WETH
-const amountOutMin = parseUnits("3000", 6) // Minimum 3000 USDC
-const deadline = Math.floor(Date.now() / 1000) + 60 * 20 // 20 minutes
-
-const { request } = await publicClient.simulateContract({
-  address: routerContract.address,
-  abi: routerContract.abi,
-  functionName: "swapExactTokensForTokens",
-  args: [
-    amountIn,
-    amountOutMin,
-    [wethContract.address, usdcContract.address],
-    userAddress,
-    deadline,
-  ],
-  account: userAddress,
-})
-
-await walletClient.writeContract(request)
-```
-</CodeCollapsibleWrapper>
-
-### Finding Contracts Dynamically
-
-```tsx
-import { findContract } from "@/components/abstract-contracts"
-
-// Search for contract by key
-const wethInfo = findContract("weth")
-if (wethInfo) {
-  console.log(wethInfo.name) // "Wrapped Ether"
-  console.log(wethInfo.description) // "WETH9 - Wrapped Ether contract for Abstract"
 }
 ```
 

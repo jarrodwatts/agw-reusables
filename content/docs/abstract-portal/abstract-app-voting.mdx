@@ -161,15 +161,6 @@ Hook that checks if the current user has already voted for a specific app in the
 | `appId` | `string \| number \| bigint` | - | **Required.** The app ID to check |
 | `enabled` | `boolean` | `true` | Whether to enable the query |
 
-#### Returns
-
-| Property | Type | Description |
-| --- | --- | --- |
-| `hasVoted` | `boolean` | Whether the user has voted for this app |
-| `isLoading` | `boolean` | Whether the check is in progress |
-| `error` | `Error \| null` | Any error that occurred |
-| `refetch` | `() => void` | Function to refetch the status |
-
 ### `use-vote-for-app.ts`
 
 Hook that handles submitting votes for apps using Abstract Global Wallet.
