@@ -244,7 +244,7 @@
         "viem",
         "@tanstack/react-query"
       ],
-      "registryDependencies": ["dialog", "button"],
+      "registryDependencies": ["dropdown-menu", "dialog", "button", "sonner"],
       "files": [
         {
           "path": "registry/new-york/blocks/onboarding-dialog/onboarding-dialog.tsx",

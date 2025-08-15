@@ -12,6 +12,7 @@
     "@tanstack/react-query"
   ],
   "registryDependencies": [
+    "dropdown-menu",
     "dialog",
     "button"
   ],
