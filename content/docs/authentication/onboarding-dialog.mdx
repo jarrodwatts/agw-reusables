@@ -20,7 +20,7 @@ The onboarding dialog has three optional phases. Install the components you need
 
   <Step step={2} title="Required: Add the onboarding dialog to your layout">
 
-Add the `<OnboardDialog />` to your `app/layout.tsx`:
+Add the `<Onboarder />` component to your `app/layout.tsx`:
 
 ```tsx title="app/layout.tsx" showLineNumbers {2, 10}
 import { NextAbstractWalletProvider } from "@/components/agw-provider";
@@ -40,34 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
   </Step>
-
-  <Step step={3} title="Required: Install the connect wallet button">
-  If you haven't already, install the [connect wallet button](/docs/authentication/connect-wallet-button) component:
-
-  ```bash
-  npx shadcn@latest add "https://agw-reusables.vercel.app/r/connect-wallet-button.json"
-  ```
-  </Step>
-
-  <Step step={4} title="Optional: Install SIWE authentication">
-  To require users to authenticate with a [SIWE Button](/docs/authentication/siwe-button), install the `siwe-button` component:
-
-  ```bash
-  npx shadcn@latest add "https://agw-reusables.vercel.app/r/siwe-button.json"
-  ```
-  </Step>
-
-  <Step step={5} title="Optional: Install session keys">
-  To require users to create a [session key](/docs/session-keys/create-session-key-button), install the `session-keys` component:
-
-  ```bash
-  npx shadcn@latest add "https://agw-reusables.vercel.app/r/session-keys.json"
-  ```
-  </Step>
-
-  
 </Steps>
-
 
 
 ## Usage
