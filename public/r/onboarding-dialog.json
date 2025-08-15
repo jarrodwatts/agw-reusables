@@ -14,9 +14,8 @@
   "registryDependencies": [
     "dialog",
     "button",
-    "connect-wallet-button",
-    "siwe-button",
-    "session-keys"
+    "dropdown-menu",
+    "sonner"
   ],
   "files": [
     {

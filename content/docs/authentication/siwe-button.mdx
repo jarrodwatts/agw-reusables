@@ -3,29 +3,41 @@ title: SIWE Authentication
 description: A SIWE authentication system with server-side utilities for protecting routes and API endpoints.
 ---
 
+import { Steps, Step } from "@/components/ui/steps";
+
 <ComponentPreview name="siwe-button" />
 
 ## Installation
 
 Ensure you have installed and setup the [AGW Provider](/docs/essentials/agw-provider) wrapper component first.
 
-```bash
-npx shadcn@latest add "https://agw-reusables.vercel.app/r/siwe-button.json"
-```
+<Steps className="mt-8">
+  <Step step={1} title="Install the component">
+    ```bash
+    npx shadcn@latest add "https://agw-reusables.vercel.app/r/siwe-button.json"
+    ```
+  </Step>
 
-Generate a secure password for `iron-session` using `openssl`:
+  <Step step={2} title="Generate a secure password">
+    Generate a secure password for `iron-session` using `openssl`:
 
-```bash
-openssl rand -base64 32
-```
+    ```bash
+    openssl rand -base64 32
+    ```
+  </Step>
 
-Add the password to your `.env.local` file:
+  <Step step={3} title="Add environment variable">
+    Add the password to your `.env.local` file:
 
-```bash title=".env.local"
-IRON_SESSION_PASSWORD="your_secure_password_here"  # Ensure it's wrapped in double quotes
-```
+    ```bash title=".env.local"
+    IRON_SESSION_PASSWORD="your_secure_password_here"  # Ensure it's wrapped in double quotes
+    ```
+  </Step>
+</Steps>
 
 ## Usage
+
+A button that prompts the user to connect their Abstract Global Wallet and sign the SIWE message to authenticate with your application.
 
 ```tsx
 import { SiweButton } from "@/components/siwe-button"
@@ -36,6 +48,8 @@ export default function App() {
 ```
 
 ### Using Hooks
+
+Use the authentication states to render content based on the user's authentication status.
 
 <CodeCollapsibleWrapper>
 ```tsx
@@ -154,31 +168,37 @@ Included are utilities for checking authentication status in server components a
 
 #### Server Component
 
+Gate content to authenticated users in a server component.
+
 <CodeCollapsibleWrapper>
 ```tsx
-import { getServerAuthUser } from "@/lib/auth-server"
+import { SiweButton } from "@/components/siwe-button";
+import { getServerAuthUser } from "@/lib/auth-server";
 
 export default async function ProtectedPage() {
-  const auth = await getServerAuthUser()
-  
+  const auth = await getServerAuthUser();
+
   if (!auth.isAuthenticated) {
-    return <div>Please sign in to access this page</div>
+    return <SiweButton />;
   }
-  
+
   return (
     <div>
       <h1>Welcome!</h1>
       <p>Your address: {auth.user?.address}</p>
     </div>
-  )
+  );
 }
+
 ```
 </CodeCollapsibleWrapper>
 
 #### API Route
 
+Protect API routes with the `requireServerAuth` utility.
+
 <CodeCollapsibleWrapper>
-```tsx
+```tsx title="app/api/protected/route.ts"
 import { NextResponse } from "next/server";
 import { requireServerAuth } from "@/lib/auth-server";
 
