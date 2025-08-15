@@ -52,13 +52,19 @@ such as requiring a wallet connection, SIWE authentication, or session key creat
 The `ready` flag is `true` when all required steps are completed. Use this flag to conditionally render UI.
 
 ```tsx
-const { ready } = useOnboarding({
-  connectWallet: true,
-  signWithEthereum: true,
-  createSessionKey: true,
-});
+"use client"
 
-return <div>{ready ? "Ready" : "Not Ready"}</div>;
+import { useOnboarding } from "@/hooks/use-onboarding"
+
+export default function MyComponent() {
+  const { ready } = useOnboarding({
+    connectWallet: true,
+    signWithEthereum: true,
+    createSessionKey: true,
+  });
+
+  return <div>{ready ? "Ready" : "Not Ready"}</div>;
+}
 ```
 
 ### `require()`
@@ -98,20 +104,35 @@ export default function MyComponent() {
 
 Use `showDialog()` to manually trigger the onboarding dialog.
 
-```tsx
-const { ready, showDialog } = useOnboarding({
-  connectWallet: true,
-  signWithEthereum: true,
-})
+_Note_: The dialog will not open if all steps are already completed.
 
-return (
-  <div>
-    <p>Status: {ready ? "Ready" : "Not Ready"}</p>
-    <Button onClick={showDialog}>
-      Show Onboarding
-    </Button>
-  </div>
-)
+```tsx
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { useOnboarding } from "@/hooks/use-onboarding";
+
+export default function MyComponent() {
+  const { ready, isLoading, isError, showDialog } = useOnboarding({
+    connectWallet: true,
+    signWithEthereum: true,
+    createSessionKey: true,
+  });
+
+  if (isError) return <div>Error occurred during onboarding</div>;
+  if (isLoading) return <div>Loading...</div>;
+
+  return (
+    <div>
+      <div>{ready ? "Ready" : "Not Ready"}</div>
+      {!ready && (
+        <Button onClick={showDialog} disabled={isLoading}>
+          {isLoading ? "Loading..." : "Show Dialog"}
+        </Button>
+      )}
+    </div>
+  );
+}
 ```
 
 ## Hook API
