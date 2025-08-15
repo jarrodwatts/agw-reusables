@@ -24,7 +24,7 @@ Add the `<OnboardDialog />` to your `app/layout.tsx`:
 
 ```tsx title="app/layout.tsx" showLineNumbers {2, 10}
 import { NextAbstractWalletProvider } from "@/components/agw-provider";
-import { OnboardDialog } from "@/components/onboard-dialog";
+import { Onboarder } from "@/components/onboarding-dialog";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <NextAbstractWalletProvider>
         <body>
           {children}
-          <OnboardDialog />
+          <Onboarder />
         </body>
       </NextAbstractWalletProvider>
     </html>
