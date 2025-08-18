@@ -5,13 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 
 /**
- * Query keys for Abstract profile queries
- */
-const QUERY_KEYS = {
-  profile: "abstract-profile",
-} as const;
-
-/**
  * Hook to retrieve the Abstract Portal profile for the current connected account
  * @returns The profile data with loading and error states
  */
@@ -19,7 +12,7 @@ export function useAbstractProfile() {
   const { address } = useAccount();
 
   return useQuery({
-    queryKey: [QUERY_KEYS.profile, address],
+    queryKey: ["abstract-profile", address],
     queryFn: async () => {
       if (!address) {
         return null;
@@ -39,7 +32,7 @@ export function useAbstractProfile() {
  */
 export function useAbstractProfileByAddress(address: string | undefined) {
   return useQuery({
-    queryKey: [QUERY_KEYS.profile, address],
+    queryKey: ["abstract-profile", address],
     queryFn: async () => {
       if (!address) {
         return null;
@@ -57,6 +50,6 @@ export function useAbstractProfileByAddress(address: string | undefined) {
       // Retry up to 2 times for other errors
       return failureCount < 2;
     },
-    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 }

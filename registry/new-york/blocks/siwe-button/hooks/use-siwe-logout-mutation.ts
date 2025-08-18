@@ -5,10 +5,6 @@ import { useLoginWithAbstract } from "@abstract-foundation/agw-react";
 import { toast } from "sonner";
 import { ClientSiweConfigurationError } from "@/registry/new-york/blocks/siwe-button/lib/types";
 
-const QUERY_KEYS = {
-  auth: "siwe-auth",
-} as const;
-
 interface LogoutResponse {
   ok: boolean;
   message?: string;
@@ -22,36 +18,36 @@ async function logoutUser(): Promise<LogoutResponse> {
       "Content-Type": "application/json",
     },
   });
-  
+
   const result = await response.json();
-  
+
   // Check for configuration errors and throw proper error type
   if (result.isConfigurationError) {
     throw new ClientSiweConfigurationError(result.message);
   }
-  
+
   if (!response.ok) {
     throw new Error(result.message || "Logout failed");
   }
-  
+
   return result;
 }
 
 /**
  * React Query mutation hook for SIWE logout functionality.
  * Handles the logout process and updates auth state.
- * 
+ *
  * @returns UseMutationResult for logout operation
- * 
+ *
  * @example
  * ```tsx
  * import { useSiweLogoutMutation } from "@/registry/new-york/blocks/siwe-button/hooks/use-siwe-logout-mutation";
- * 
+ *
  * function LogoutButton() {
  *   const logoutMutation = useSiweLogoutMutation();
- *   
+ *
  *   return (
- *     <button 
+ *     <button
  *       onClick={() => logoutMutation.mutate()}
  *       disabled={logoutMutation.isPending}
  *     >
@@ -60,7 +56,7 @@ async function logoutUser(): Promise<LogoutResponse> {
  *   );
  * }
  * ```
- * 
+ *
  * @example
  * ```tsx
  * // With custom success/error handling
@@ -75,7 +71,7 @@ async function logoutUser(): Promise<LogoutResponse> {
  *       console.error("Logout failed:", error);
  *     }
  *   });
- * 
+ *
  *   return (
  *     <button onClick={() => logoutMutation.mutate()}>
  *       Sign Out
@@ -95,20 +91,20 @@ export function useSiweLogoutMutation(options?: {
     mutationFn: logoutUser,
     onSuccess: (data) => {
       // Immediately reset auth query data to logged out state
-      queryClient.setQueryData([QUERY_KEYS.auth], {
+      queryClient.setQueryData(["siwe-auth"], {
         ok: false,
-        message: "Logged out"
+        message: "Logged out",
       });
-      
+
       // Also invalidate to trigger refetch
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.auth] });
-      
+      queryClient.invalidateQueries({ queryKey: ["siwe-auth"] });
+
       // Disconnect wallet for complete logout experience
       walletLogout();
-      
+
       // Show success toast
       toast.success("Successfully signed out");
-      
+
       // Call custom success handler if provided
       options?.onSuccess?.();
     },
@@ -117,10 +113,10 @@ export function useSiweLogoutMutation(options?: {
       if (error instanceof ClientSiweConfigurationError) {
         throw error;
       }
-      
+
       // Show error toast for other errors
       toast.error(error.message || "Sign out failed");
-      
+
       // Call custom error handler if provided
       options?.onError?.(error);
     },

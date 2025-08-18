@@ -2,11 +2,10 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
-import { AuthResponse, ClientSiweConfigurationError } from "@/registry/new-york/blocks/siwe-button/lib/types";
-
-const QUERY_KEYS = {
-  auth: "siwe-auth",
-} as const;
+import {
+  AuthResponse,
+  ClientSiweConfigurationError,
+} from "@/registry/new-york/blocks/siwe-button/lib/types";
 
 async function fetchAuthUser(): Promise<AuthResponse> {
   const response = await fetch("/api/auth/user");
@@ -24,7 +23,7 @@ export function useSiweAuthQuery() {
   const { address, isConnected } = useAccount();
 
   const query = useQuery({
-    queryKey: [QUERY_KEYS.auth, address],
+    queryKey: ["siwe-auth", address],
     queryFn: fetchAuthUser,
     // Only run query if wallet is connected
     enabled: isConnected && !!address,
@@ -50,7 +49,7 @@ export function useSiweAuthQuery() {
       // Retry up to 2 times for other errors
       return failureCount < 2;
     },
-    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 
   // If there's a configuration error, throw it during render to show in Next.js overlay

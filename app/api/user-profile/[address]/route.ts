@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const ABSTRACT_PORTAL_API_URL = "https://backend.portal.abs.xyz/api";
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ address: string }> }
 ) {
   try {
