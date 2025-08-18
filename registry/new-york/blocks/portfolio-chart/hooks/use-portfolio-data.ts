@@ -20,24 +20,24 @@ export interface PortfolioApiResponse {
 
 type TimePeriod = "1d" | "7d" | "30d"
 
-async function fetchPortfolioData(
-  address: string,
-  period: TimePeriod
-): Promise<{ data: PortfolioDataPoint[]; currentValue: number | null }> {
+async function fetchAllPortfolioData(address: string): Promise<PortfolioApiResponse> {
   if (!address) {
     throw new Error("Address is required")
   }
 
-  const response = await fetch(
-    `/api/user-portfolio/${address}`
-  )
+  const response = await fetch(`/api/user-portfolio/${address}`)
 
   if (!response.ok) {
     throw new Error(`Failed to fetch portfolio data: ${response.statusText}`)
   }
 
-  const apiData: PortfolioApiResponse = await response.json()
-  
+  return await response.json()
+}
+
+function processPortfolioData(
+  apiData: PortfolioApiResponse,
+  period: TimePeriod
+): { data: PortfolioDataPoint[]; currentValue: number | null } {
   if (!apiData.portfolio || !apiData.portfolio[period]) {
     throw new Error(`No portfolio data available for period: ${period}`)
   }
@@ -81,9 +81,9 @@ async function fetchPortfolioData(
 }
 
 export function usePortfolioData(address: string, period: TimePeriod) {
-  return useQuery({
-    queryKey: ["portfolio-data", address, period],
-    queryFn: () => fetchPortfolioData(address, period),
+  const query = useQuery({
+    queryKey: ["portfolio-data", address],
+    queryFn: () => fetchAllPortfolioData(address),
     enabled: !!address,
     staleTime: 5 * 60 * 1000, // 5 minutes
     refetchInterval: 60 * 1000, // 1 minute
@@ -95,4 +95,12 @@ export function usePortfolioData(address: string, period: TimePeriod) {
       return failureCount < 3
     },
   })
+
+  // Process the data for the selected period
+  const processedData = query.data ? processPortfolioData(query.data, period) : null
+
+  return {
+    ...query,
+    data: processedData,
+  }
 }

@@ -52,6 +52,7 @@ export function PortfolioChart({
   const {
     data: portfolioResult,
     isLoading,
+    isFetching,
     isError,
     error,
   } = usePortfolioData(address, selectedPeriod);
@@ -105,14 +106,16 @@ export function PortfolioChart({
               size="sm"
               onClick={() => setSelectedPeriod(period.key)}
               className="h-7 px-2 text-xs"
+              disabled={isFetching && selectedPeriod === period.key}
             >
-              {period.label}
+              {isFetching && selectedPeriod === period.key
+                ? "..."
+                : period.label}
             </Button>
           ))}
         </div>
       </div>
 
-      {/* Chart */}
       {isLoading ? (
         <div className="space-y-3">
           <Skeleton className="h-4 w-32" />
