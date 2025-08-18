@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import { useLoginWithAbstract } from "@abstract-foundation/agw-react"
-import { Button } from "@/registry/new-york/ui/button"
-import { useAccount } from "wagmi"
-import { cn } from "@/lib/utils"
-import { type ClassValue } from "clsx"
-import { useState } from "react"
-import { toast } from "sonner"
-import { abstract } from "viem/chains"
-import { useUserVoteStatus } from "./hooks/use-user-vote-status"
-import { useVoteForApp } from "./hooks/use-vote-for-app"
+import { useLoginWithAbstract } from "@abstract-foundation/agw-react";
+import { Button } from "@/registry/new-york/ui/button";
+import { useAccount } from "wagmi";
+import { cn } from "@/lib/utils";
+import { type ClassValue } from "clsx";
+import { useState } from "react";
+import { toast } from "sonner";
+import { abstract } from "viem/chains";
+import { useUserVoteStatus } from "@/registry/new-york/blocks/abstract-voting-button/hooks/use-user-vote-status";
+import { useVoteForApp } from "@/registry/new-york/blocks/abstract-voting-button/hooks/use-vote-for-app";
 
 interface AbstractVotingButtonProps {
-  appId: string | number | bigint
-  className?: ClassValue
-  children?: React.ReactNode
-  onVoteSuccess?: (data: `0x${string}`) => void
-  onVoteError?: (error: Error) => void
-  disabled?: boolean
+  appId: string | number | bigint;
+  className?: ClassValue;
+  children?: React.ReactNode;
+  onVoteSuccess?: (data: `0x${string}`) => void;
+  onVoteError?: (error: Error) => void;
+  disabled?: boolean;
 }
 
 /**
  * Abstract Voting Button
- * 
+ *
  * A voting button component that handles:
  * - Checking if user has already voted for an app
  * - Wallet connection via Abstract Global Wallet
@@ -35,64 +35,68 @@ export function AbstractVotingButton({
   children,
   onVoteSuccess,
   onVoteError,
-  disabled = false
+  disabled = false,
 }: AbstractVotingButtonProps) {
-  const { isConnected, chainId } = useAccount()
-  const { login } = useLoginWithAbstract()
-  const [isVoting, setIsVoting] = useState(false)
+  const { isConnected, chainId } = useAccount();
+  const { login } = useLoginWithAbstract();
+  const [isVoting, setIsVoting] = useState(false);
 
   // Check if user has already voted for this app
   const { hasVoted, isLoading: isStatusLoading } = useUserVoteStatus({
     appId,
-    enabled: isConnected
-  })
+    enabled: isConnected,
+  });
 
   // Hook to submit vote
-  const { voteForApp, isLoading: isVoteLoading, error } = useVoteForApp({
+  const {
+    voteForApp,
+    isLoading: isVoteLoading,
+    error,
+  } = useVoteForApp({
     onSuccess: (data) => {
-      setIsVoting(false)
-      onVoteSuccess?.(data)
+      setIsVoting(false);
+      onVoteSuccess?.(data);
     },
     onError: (error) => {
-      setIsVoting(false)
-      onVoteError?.(error)
-    }
-  })
+      setIsVoting(false);
+      onVoteError?.(error);
+    },
+  });
 
-  
-
-  const isLoading = isStatusLoading || isVoteLoading || isVoting
+  const isLoading = isStatusLoading || isVoteLoading || isVoting;
 
   // Handle vote submission
   const handleVote = async () => {
     if (!isConnected) {
-      login()
-      return
+      login();
+      return;
     }
 
     // Check if user is on testnet and show error toast
     if (chainId && chainId !== abstract.id) {
-      toast.error("App voting is only supported on Abstract mainnet. Please switch networks to vote.")
-      return
+      toast.error(
+        "App voting is only supported on Abstract mainnet. Please switch networks to vote."
+      );
+      return;
     }
 
     if (hasVoted || disabled) {
-      return
+      return;
     }
 
-    setIsVoting(true)
+    setIsVoting(true);
     try {
-      await voteForApp(appId)
+      await voteForApp(appId);
     } catch (err) {
-      setIsVoting(false)
+      setIsVoting(false);
       // Error handling is done in the hook
     }
-  }
+  };
 
   // Determine button text and state
   const getButtonContent = () => {
     if (children) {
-      return children
+      return children;
     }
 
     if (!isConnected) {
@@ -101,7 +105,7 @@ export function AbstractVotingButton({
           Connect to Vote
           <AbstractLogo className="ml-2" />
         </>
-      )
+      );
     }
 
     if (isLoading) {
@@ -110,7 +114,7 @@ export function AbstractVotingButton({
           {isVoting ? "Voting..." : "Loading..."}
           <AbstractLogo className="ml-2 animate-spin" />
         </>
-      )
+      );
     }
 
     if (hasVoted) {
@@ -119,7 +123,7 @@ export function AbstractVotingButton({
           Voted
           <CheckIcon className="ml-2 h-4 w-4" />
         </>
-      )
+      );
     }
 
     return (
@@ -127,10 +131,10 @@ export function AbstractVotingButton({
         Upvote on Abstract
         <VoteIcon className="ml-2 h-4 w-4" />
       </>
-    )
-  }
+    );
+  };
 
-  const isButtonDisabled = disabled || isLoading || (isConnected && hasVoted)
+  const isButtonDisabled = disabled || isLoading || (isConnected && hasVoted);
 
   return (
     <Button
@@ -151,7 +155,7 @@ export function AbstractVotingButton({
         {getButtonContent()}
       </span>
     </Button>
-  )
+  );
 }
 
 function VoteIcon({ className }: { className?: ClassValue }) {
@@ -169,7 +173,7 @@ function VoteIcon({ className }: { className?: ClassValue }) {
     >
       <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z" />
     </svg>
-  )
+  );
 }
 
 function CheckIcon({ className }: { className?: ClassValue }) {
@@ -187,7 +191,7 @@ function CheckIcon({ className }: { className?: ClassValue }) {
     >
       <path d="M20 6L9 17l-5-5" />
     </svg>
-  )
+  );
 }
 
 function AbstractLogo({ className }: { className?: ClassValue }) {
@@ -200,9 +204,18 @@ function AbstractLogo({ className }: { className?: ClassValue }) {
       xmlns="http://www.w3.org/2000/svg"
       className={cn(className)}
     >
-      <path d="M33.7221 31.0658L43.997 41.3463L39.1759 46.17L28.901 35.8895C28.0201 35.0081 26.8589 34.5273 25.6095 34.5273C24.3602 34.5273 23.199 35.0081 22.3181 35.8895L12.0432 46.17L7.22205 41.3463L17.4969 31.0658H33.7141H33.7221Z" fill="currentColor" />
-      <path d="M35.4359 28.101L49.4668 31.8591L51.2287 25.2645L37.1978 21.5065C35.9965 21.186 34.9954 20.4167 34.3708 19.335C33.7461 18.2613 33.586 17.0033 33.9063 15.8013L37.6623 1.76283L31.0713 0L27.3153 14.0385L35.4279 28.093L35.4359 28.101Z" fill="currentColor" />
-      <path d="M15.7912 28.101L1.76028 31.8591L-0.00158691 25.2645L14.0293 21.5065C15.2306 21.186 16.2316 20.4167 16.8563 19.335C17.4809 18.2613 17.6411 17.0033 17.3208 15.8013L13.5648 1.76283L20.1558 0L23.9118 14.0385L15.7992 28.093L15.7912 28.101Z" fill="currentColor" />
+      <path
+        d="M33.7221 31.0658L43.997 41.3463L39.1759 46.17L28.901 35.8895C28.0201 35.0081 26.8589 34.5273 25.6095 34.5273C24.3602 34.5273 23.199 35.0081 22.3181 35.8895L12.0432 46.17L7.22205 41.3463L17.4969 31.0658H33.7141H33.7221Z"
+        fill="currentColor"
+      />
+      <path
+        d="M35.4359 28.101L49.4668 31.8591L51.2287 25.2645L37.1978 21.5065C35.9965 21.186 34.9954 20.4167 34.3708 19.335C33.7461 18.2613 33.586 17.0033 33.9063 15.8013L37.6623 1.76283L31.0713 0L27.3153 14.0385L35.4279 28.093L35.4359 28.101Z"
+        fill="currentColor"
+      />
+      <path
+        d="M15.7912 28.101L1.76028 31.8591L-0.00158691 25.2645L14.0293 21.5065C15.2306 21.186 16.2316 20.4167 16.8563 19.335C17.4809 18.2613 17.6411 17.0033 17.3208 15.8013L13.5648 1.76283L20.1558 0L23.9118 14.0385L15.7992 28.093L15.7912 28.101Z"
+        fill="currentColor"
+      />
     </svg>
-  )
+  );
 }
