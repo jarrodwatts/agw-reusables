@@ -1,40 +1,40 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
-import { cn } from "@/lib/utils"
+import { useState } from "react";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { cn } from "@/lib/utils";
+import { ChartContainer, ChartTooltip } from "@/registry/new-york/ui/chart";
+import { Button } from "@/registry/new-york/ui/button";
+import { Skeleton } from "@/registry/new-york/ui/skeleton";
+import { usePortfolioData } from "@/registry/new-york/blocks/portfolio-chart/hooks/use-portfolio-data";
 import {
-  ChartContainer,
-  ChartTooltip,
-} from "@/registry/new-york/ui/chart"
-import { Button } from "@/registry/new-york/ui/button"
-import { Skeleton } from "@/registry/new-york/ui/skeleton"
-import { usePortfolioData } from "./hooks/use-portfolio-data"
-import { formatTimestamp, formatCurrency } from "./lib/portfolio-utils"
-import { type ClassValue } from "clsx"
+  formatTimestamp,
+  formatCurrency,
+} from "@/registry/new-york/blocks/portfolio-chart/lib/portfolio-utils";
+import { type ClassValue } from "clsx";
 
 interface PortfolioChartProps {
-  className?: ClassValue
-  address: string
-  defaultPeriod?: "1d" | "7d" | "30d"
+  className?: ClassValue;
+  address: string;
+  defaultPeriod?: "1d" | "7d" | "30d";
 }
 
 const TIME_PERIODS = [
   { key: "1d", label: "1D" },
   { key: "7d", label: "7D" },
   { key: "30d", label: "30D" },
-] as const
+] as const;
 
 const chartConfig = {
   value: {
     label: "Portfolio Value",
     color: "var(--primary)",
   },
-}
+};
 
 /**
  * Portfolio Chart - Displays Abstract Global Wallet portfolio value over time
- * 
+ *
  * A comprehensive portfolio visualization component that:
  * - Shows portfolio value trends using an area chart
  * - Supports multiple time periods (1h, 1d, 7d, 30d, 1y)
@@ -45,22 +45,34 @@ const chartConfig = {
 export function PortfolioChart({
   className,
   address,
-  defaultPeriod = "7d"
+  defaultPeriod = "7d",
 }: PortfolioChartProps) {
-  const [selectedPeriod, setSelectedPeriod] = useState<typeof TIME_PERIODS[number]["key"]>(defaultPeriod)
-  const { data: portfolioResult, isLoading, isError, error } = usePortfolioData(address, selectedPeriod)
+  const [selectedPeriod, setSelectedPeriod] =
+    useState<(typeof TIME_PERIODS)[number]["key"]>(defaultPeriod);
+  const {
+    data: portfolioResult,
+    isLoading,
+    isError,
+    error,
+  } = usePortfolioData(address, selectedPeriod);
 
-  const chartData = portfolioResult?.data?.map((item) => ({
-    timestamp: item.startTimestamp,
-    value: parseFloat(item.totalUsdValue),
-    formattedTime: formatTimestamp(item.startTimestamp, selectedPeriod),
-  })) ?? []
+  const chartData =
+    portfolioResult?.data?.map((item) => ({
+      timestamp: item.startTimestamp,
+      value: parseFloat(item.totalUsdValue),
+      formattedTime: formatTimestamp(item.startTimestamp, selectedPeriod),
+    })) ?? [];
 
-  const currentValue = portfolioResult?.currentValue ?? 0
+  const currentValue = portfolioResult?.currentValue ?? 0;
 
   if (isError) {
     return (
-      <div className={cn("flex items-center justify-center p-8 text-center", className)}>
+      <div
+        className={cn(
+          "flex items-center justify-center p-8 text-center",
+          className
+        )}
+      >
         <div className="space-y-2">
           <p className="text-sm text-muted-foreground">
             Failed to load portfolio data
@@ -70,7 +82,7 @@ export function PortfolioChart({
           </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -147,17 +159,17 @@ export function PortfolioChart({
             <ChartTooltip
               cursor={false}
               content={({ active, payload }) => {
-                if (!active || !payload?.length) return null
-                const data = payload[0]?.payload
-                if (!data) return null
-                
+                if (!active || !payload?.length) return null;
+                const data = payload[0]?.payload;
+                if (!data) return null;
+
                 return (
                   <div className="rounded-lg border bg-background px-3 py-2 text-sm shadow-md">
                     <div className="font-medium">
                       {formatCurrency(data.value)}
                     </div>
                   </div>
-                )
+                );
               }}
             />
             <Area
@@ -171,5 +183,5 @@ export function PortfolioChart({
         </ChartContainer>
       )}
     </div>
-  )
+  );
 }
