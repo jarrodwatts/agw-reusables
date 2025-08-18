@@ -130,13 +130,4 @@ export interface NFT {
   isHidden: boolean;
 }
 
-export interface NFTsResponse {
-  nfts: NFT[];
-  nextPage?: string;
-}
 
-export interface NFTCardProps {
-  nft: NFT;
-  showCollectionName?: boolean;
-  className?: string;
-}

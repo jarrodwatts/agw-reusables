@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import { useAbstractClient } from "@abstract-foundation/agw-react";
-import { getStoredSession } from "../lib/get-stored-session-key";
+import { getStoredSession } from "@/registry/new-york/blocks/session-keys/lib/get-stored-session-key";
 import { publicClient } from "@/config/viem-clients";
 import { chain } from "@/config/chain";
 import { privateKeyToAccount } from "viem/accounts";
@@ -26,11 +26,7 @@ type SessionKeyTransactionParams<
   abi: TAbi;
   address: Address;
   functionName: TFunctionName;
-  args?: ContractFunctionArgs<
-    TAbi,
-    "payable" | "nonpayable",
-    TFunctionName
-  >;
+  args?: ContractFunctionArgs<TAbi, "payable" | "nonpayable", TFunctionName>;
   value?: bigint;
 };
 
@@ -144,7 +140,7 @@ export function useSessionKeyTransaction(
     onSuccess: (data: { hash: Address }) => {
       // Invalidate session key queries to refresh UI state
       queryClient.invalidateQueries({
-        queryKey: ["session-key"], 
+        queryKey: ["session-key"],
       });
       options?.onSuccess?.(data);
     },
@@ -158,13 +154,17 @@ export function useSessionKeyTransaction(
   const mutate = <TAbi extends Abi>(
     params: SessionKeyTransactionParams<TAbi>
   ) => {
-    return transactionMutation.mutate(params as SessionKeyTransactionParams<Abi>);
+    return transactionMutation.mutate(
+      params as SessionKeyTransactionParams<Abi>
+    );
   };
 
   const mutateAsync = <TAbi extends Abi>(
     params: SessionKeyTransactionParams<TAbi>
   ) => {
-    return transactionMutation.mutateAsync(params as SessionKeyTransactionParams<Abi>);
+    return transactionMutation.mutateAsync(
+      params as SessionKeyTransactionParams<Abi>
+    );
   };
 
   return {

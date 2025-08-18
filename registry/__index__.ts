@@ -194,9 +194,17 @@ export const Index: Record<string, any> = {
       type: "registry:component",
       target: ""
     }, {
-      path: "types/nft-card.ts",
+      path: "registry/new-york/blocks/nft-card/hooks/use-nfts.ts",
+      type: "registry:hook",
+      target: ""
+    }, {
+      path: "app/api/user-nfts/[address]/route.ts",
       type: "registry:lib",
-      target: "types/nft-card.ts"
+      target: "app/api/user-nfts/[address]/route.ts"
+    }, {
+      path: "types/nfts.ts",
+      type: "registry:lib",
+      target: "types/nfts.ts"
     }],
     component: React.lazy(async () => {
       const mod = await import("@/registry/new-york/examples/nft-card-demo.tsx")

@@ -13,16 +13,23 @@ npx shadcn@latest add "https://agw-reusables.vercel.app/r/nft-card.json"
 
 ## Usage
 
-### Basic Usage
 
 ```tsx
-import { NFTGallery } from "@/components/nft-gallery"
+"use client"
 
-export default function MyNFTs() {
+import { NFTCard } from "@/components/nft-card"
+import { useNFTs } from "@/hooks/use-nfts"
+
+export default function FirstNFT() {
   const address = "0x1C67724aCc76821C8aD1f1F87BA2751631BAbD0c"
+  const { data, isLoading, error } = useNFTs(address)
+  
+  if (isLoading) return <div>Loading NFT...</div>
+  if (error) return <div>Error loading NFT</div>
+  if (!data?.nfts?.length) return <div>No NFTs found</div>
   
   return (
-    <NFTGallery address={address} />
+    <NFTCard nft={data.nfts[0]} />
   )
 }
 ```
@@ -32,82 +39,70 @@ export default function MyNFTs() {
 ```tsx
 "use client"
 
-import { NFTGallery } from "@/components/nft-gallery"
+import { NFTCard } from "@/components/nft-card"
+import { useNFTs } from "@/hooks/use-nfts"
 import { useAccount } from "wagmi"
 
-export default function UserNFTs() {
+export default function UserNFT() {
   const { address } = useAccount()
+  const { data, isLoading, error } = useNFTs(address || "")
   
   if (!address) {
     return <p>Connect your wallet to view your NFTs</p>
   }
   
+  if (isLoading) return <div>Loading NFT...</div>
+  if (error) return <div>Error loading NFT</div>
+  if (!data?.nfts?.length) return <div>No NFTs found</div>
+  
   return (
-    <NFTGallery address={address} />
+    <NFTCard nft={data.nfts[0]} showCollectionName={true} />
   )
 }
 ```
 
-### Custom Layout
+### Multiple NFT Cards
 
 ```tsx
 "use client"
 
-import { NFTGallery } from "@/components/nft-gallery"
-
-export default function CompactGallery() {
-  const address = "0x1C67724aCc76821C8aD1f1F87BA2751631BAbD0c"
-  
-  return (
-    <NFTGallery
-      address={address}
-      columns={{ default: 3, sm: 4, md: 6, lg: 8 }}
-      showCollectionName={false}
-      maxItems={20}
-    />
-  )
-}
-```
-
-### Using the Hook Directly
-
-<CodeCollapsibleWrapper>
-```tsx
-import { useNFTs } from "@/components/nft-gallery"
+import { NFTCard } from "@/components/nft-card"
+import { useNFTs } from "@/hooks/use-nfts"
 import { useAccount } from "wagmi"
 
-export default function CustomNFTDisplay() {
+export default function NFTGrid() {
   const { address } = useAccount()
   const { data, isLoading, error } = useNFTs(address || "")
   
   if (isLoading) return <div>Loading NFTs...</div>
-  if (error) return <div>Error: {error.message}</div>
+  if (error) return <div>Error loading NFTs</div>
   if (!data?.nfts?.length) return <div>No NFTs found</div>
   
+  const filteredNfts = data.nfts
+    .filter(nft => !nft.collection?.name?.toLowerCase().includes("abscash"))
+    .slice(0, 6)
+  
   return (
-    <div>
-      <h2>Found {data.nfts.length} NFTs</h2>
-      <div className="grid grid-cols-4 gap-4">
-        {data.nfts.map((nft) => (
-          <div key={nft.id}>
-            <img src={nft.imageUrl} alt={nft.name} />
-            <h3>{nft.name}</h3>
-            <p>{nft.collection.name}</p>
-          </div>
-        ))}
-      </div>
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      {filteredNfts.map((nft) => (
+        <NFTCard 
+          key={nft.id} 
+          nft={nft} 
+          showCollectionName={false}
+          className="hover:shadow-lg transition-shadow w-16 h-16"
+        />
+      ))}
     </div>
   )
 }
 ```
-</CodeCollapsibleWrapper>
 
 ## What's included
 
 This command installs the following files:
 
 - `/components`
-  - [`nft-card.tsx`](#nft-cardtsx) - Main NFT gallery component with responsive grid layout
+  - [`nft-card.tsx`](#nft-cardtsx) - Individual NFT card component for displaying a single NFT
 
 - `/hooks`
   - [`use-nfts.ts`](#use-nftsts) - Hook for fetching NFT data from Abstract backend
@@ -117,7 +112,7 @@ This command installs the following files:
 
 ### `nft-card.tsx`
 
-A responsive NFT gallery component that fetches and displays NFTs from the Abstract backend API with automatic loading states, error handling, and empty state management.
+A single NFT card component that displays an NFT with image, name, collection, and balance. Includes hover effects, loading states for images, and responsive design.
 
 <ComponentSource src="registry/new-york/blocks/nft-card/nft-card.tsx" />
 
@@ -125,12 +120,9 @@ A responsive NFT gallery component that fetches and displays NFTs from the Abstr
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `address` | `string` | - | Wallet address to fetch NFTs for |
-| `className` | `string` | `undefined` | Additional CSS classes |
-| `columns` | `object` | `{ default: 2, sm: 3, md: 4, lg: 6 }` | Responsive grid column configuration |
-| `showCollectionName` | `boolean` | `true` | Display collection name under each NFT |
-| `showFloorPrice` | `boolean` | `false` | Display floor price when available |
-| `maxItems` | `number` | `undefined` | Limit the number of NFTs displayed |
+| `nft` | `NFT` | - | The NFT object to display |
+| `showCollectionName` | `boolean` | `true` | Display collection name under the NFT name |
+| `className` | `string` | `undefined` | Additional CSS classes for the card |
 
 ### `use-nfts.ts`
 

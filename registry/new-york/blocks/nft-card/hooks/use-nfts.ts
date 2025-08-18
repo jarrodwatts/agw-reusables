@@ -1,5 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import type { NFTsResponse } from "@/types/nft-card";
+import type { NFT } from "@/types/nfts";
+
+interface NFTsResponse {
+  nfts: NFT[];
+  nextPage?: string;
+}
 
 async function fetchUserNFTs(address: string): Promise<NFTsResponse> {
   if (!address) {

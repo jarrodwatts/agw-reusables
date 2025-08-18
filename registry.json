@@ -505,20 +505,25 @@
       "title": "NFT Card",
       "description": "A single NFT card component that displays an NFT with image, name, collection, and balance",
       "dependencies": [],
-      "registryDependencies": [
-        "card",
-        "badge",
-        "aspect-ratio"
-      ],
+      "registryDependencies": ["card", "badge", "aspect-ratio"],
       "files": [
         {
           "path": "registry/new-york/blocks/nft-card/nft-card.tsx",
           "type": "registry:component"
         },
         {
-          "path": "types/nft-card.ts",
+          "path": "registry/new-york/blocks/nft-card/hooks/use-nfts.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "app/api/user-nfts/[address]/route.ts",
           "type": "registry:lib",
-          "target": "types/nft-card.ts"
+          "target": "app/api/user-nfts/[address]/route.ts"
+        },
+        {
+          "path": "types/nfts.ts",
+          "type": "registry:lib",
+          "target": "types/nfts.ts"
         }
       ]
     },

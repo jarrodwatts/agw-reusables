@@ -1,10 +1,16 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Card, CardContent } from "@/registry/new-york/ui/card";
+import { Card } from "@/registry/new-york/ui/card";
 import { Badge } from "@/registry/new-york/ui/badge";
 import { AspectRatio } from "@/registry/new-york/ui/aspect-ratio";
-import type { NFT, NFTCardProps } from "@/types/nft-card";
+import type { NFT } from "@/types/nfts";
+
+interface NFTCardProps {
+  nft: NFT;
+  showCollectionName?: boolean;
+  className?: string;
+}
 
 /**
  * NFT Card - A single NFT card component that displays an NFT with image, name, collection, and balance
@@ -14,13 +20,17 @@ export function NFTCard({
   showCollectionName = true,
   className,
 }: NFTCardProps) {
-  const imageUrl =
-    nft.imageMediumUrl || nft.imageLargeUrl || nft.imageUrl;
+  const imageUrl = nft.imageMediumUrl || nft.imageLargeUrl || nft.imageUrl;
   const hasImage = !!imageUrl;
   const collectionName = nft.collection?.name || nft.contract?.name;
 
   return (
-    <Card className={cn("group overflow-hidden transition-shadow hover:shadow-md p-0 gap-1", className)}>
+    <Card
+      className={cn(
+        "group overflow-hidden transition-shadow hover:shadow-md p-0 gap-1",
+        className
+      )}
+    >
       <div className="relative">
         <AspectRatio ratio={1} className="bg-muted overflow-hidden">
           {hasImage ? (
