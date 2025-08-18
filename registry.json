@@ -454,11 +454,12 @@
           "target": "types/contracts.ts"
         },
         {
-          "path": "registry/new-york/blocks/abstract-contracts/lib/contracts.ts",
-          "type": "registry:lib"
+          "path": "registry/new-york/blocks/abstract-contracts/lib/abstract-contracts.ts",
+          "type": "registry:lib",
+          "target": "config/abstract-contracts.ts"
         },
         {
-          "path": "registry/new-york/blocks/abstract-contracts/lib/utils.ts",
+          "path": "registry/new-york/blocks/abstract-contracts/lib/chain-utils.ts",
           "type": "registry:lib"
         }
       ]

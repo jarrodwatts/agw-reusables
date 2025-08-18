@@ -14,7 +14,7 @@ npx shadcn@latest add "https://agw-reusables.vercel.app/r/abstract-contracts.jso
 Access contract addresses directly.
 
 ```tsx
-import { ABSTRACT_CONTRACTS } from "@/components/abstract-contracts"
+import { ABSTRACT_CONTRACTS } from "@/config/abstract-contracts"
 
 const wethMainnet = ABSTRACT_CONTRACTS.tokens.weth.addresses.mainnet
 // "0x3439153EB7AF838Ad19d56E1571FBD09333C2809"
@@ -28,18 +28,20 @@ const usdcTestnet = ABSTRACT_CONTRACTS.tokens.usdc.addresses.testnet
 Get contract addresses for mainnet or testnet specifically.
 
 ```tsx
-import { getContract, getContractAddress } from "@/components/abstract-contracts"
-import { abstract, abstractTestnet } from "viem/chains"
+import { ABSTRACT_CONTRACTS } from "@/config/abstract-contracts";
+import { getContract, getContractAddress } from "@/lib/chain-utils";
+import { abstract, abstractTestnet } from "viem/chains";
 
 // Get contract for specific chain
-const wethMainnet = getContract("weth", abstract.id)
-const wethTestnet = getContract("weth", abstractTestnet.id)
+const wethMainnet = getContract("weth", abstract.id);
+const wethTestnet = getContract("weth", abstractTestnet.id);
 
 // Get just address for specific chain
 const usdcMainnetAddress = getContractAddress(
   ABSTRACT_CONTRACTS.tokens.usdc.addresses,
   abstract.id
-)
+);
+
 ```
 
 ### Network-aware Address Resolution
@@ -48,7 +50,7 @@ Get contract addresses for the currently active chain (mainnet or testnet).
 
 ```tsx
 // Automatically uses mainnet or testnet based on config
-import { getContractWithCurrentChain, getContractAddressWithCurrentChain } from "@/components/abstract-contracts"
+import { getContractWithCurrentChain, getContractAddressWithCurrentChain } from "@/lib/chain-utils"
 
 const wethContract = getContractWithCurrentChain("weth") // Returns an object with metadata
 console.log(wethContract.address) // Just the contract address
@@ -62,7 +64,7 @@ const usdcAddress = getContractAddressWithCurrentChain("usdc")
 Some helpful utility functions for working with Abstract networks.
 
 ```tsx
-import { isAbstractNetwork, getNetworkName } from "@/components/abstract-contracts"
+import { isAbstractNetwork, getNetworkName } from "@/lib/chain-utils"
 
 // Check if chain ID is supported
 if (isAbstractNetwork(chainId)) {
@@ -75,16 +77,19 @@ if (isAbstractNetwork(chainId)) {
 
 This command installs the following files:
 
+- `/config`
+  - [`abstract-contracts.ts`](#abstract-contractsts) - Contract addresses, ABIs, and configuration
+- `/lib`
+  - [`chain-utils.ts`](#chain-utilsts) - Network-aware utility functions for address resolution
 - `/types`
-  - [`contracts.ts`](#contractsts) - Contract addresses, ABIs, and configuration
-  - [`utils.ts`](#utilsts) - Network-aware utility functions for address resolution
-  - [`types.ts`](#typests) - TypeScript type definitions
+  - [`contracts.ts`](#typescontractsts) - Contract addresses, ABIs, and configuration
 
-### `contracts.ts`
+
+### `abstract-contracts.ts`
 
 Contract configuration containing addresses for both Abstract mainnet and testnet, along with complete ABIs for tokens (WETH, USDC, USDT) and Uniswap V2/V3 infrastructure.
 
-<ComponentSource src="registry/new-york/blocks/abstract-contracts/lib/contracts.ts" />
+<ComponentSource src="registry/new-york/blocks/abstract-contracts/lib/abstract-contracts.ts" />
 
 #### Available Contracts
 
@@ -100,11 +105,11 @@ Contract configuration containing addresses for both Abstract mainnet and testne
 - `quoterV2` - Uniswap V3 quoter for swap price quotes
 - `swapRouter02` - Uniswap V3 router for executing swaps
 
-### `utils.ts`
+### `chain-utils.ts`
 
 Utility functions for network-aware contract address resolution with automatic mainnet/testnet selection and error handling.
 
-<ComponentSource src="registry/new-york/blocks/abstract-contracts/lib/utils.ts" />
+<ComponentSource src="registry/new-york/blocks/abstract-contracts/lib/chain-utils.ts" />
 
 #### Utility Functions
 
@@ -122,13 +127,4 @@ Utility functions for network-aware contract address resolution with automatic m
 
 TypeScript type definitions for contract configuration, network IDs, and utility function options.
 
-<ComponentSource src="/types/contracts.ts" />
-
-#### Types
-
-| Type | Description |
-| --- | --- |
-| `ContractInfo` | Contract metadata including name, description, addresses, and ABI |
-| `ContractAddress` | Mapping of network names to contract addresses |
-| `ContractsConfig` | Top-level configuration structure for tokens and DEX contracts |
-| `NetworkId` | Union type for Abstract mainnet (2741) and testnet (11124) |
+<ComponentSource src="types/contracts.ts" />

@@ -50,11 +50,11 @@ export const Index: Record<string, any> = {
       type: "registry:lib",
       target: "types/contracts.ts"
     }, {
-      path: "registry/new-york/blocks/abstract-contracts/lib/contracts.ts",
+      path: "registry/new-york/blocks/abstract-contracts/lib/abstract-contracts.ts",
       type: "registry:lib",
-      target: ""
+      target: "config/abstract-contracts.ts"
     }, {
-      path: "registry/new-york/blocks/abstract-contracts/lib/utils.ts",
+      path: "registry/new-york/blocks/abstract-contracts/lib/chain-utils.ts",
       type: "registry:lib",
       target: ""
     }],
