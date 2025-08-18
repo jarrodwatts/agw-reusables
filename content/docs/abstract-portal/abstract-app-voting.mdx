@@ -86,11 +86,13 @@ import { Button } from "@/components/ui/button";
 import { useUserVoteStatus } from "@/hooks/use-user-vote-status";
 import { useVoteForApp } from "@/hooks/use-vote-for-app";
 
+const APP_ID = "15";
+
 export default function CustomVotingImplementation() {
   const { isConnected } = useAccount();
 
   const { hasVoted, isLoading: statusLoading } = useUserVoteStatus({
-    appId: "1",
+    appId: APP_ID,
     enabled: isConnected,
   });
 
@@ -102,7 +104,7 @@ export default function CustomVotingImplementation() {
   const isLoading = statusLoading || voteLoading;
 
   return (
-    <Button onClick={() => voteForApp("1")} disabled={isLoading || hasVoted}>
+    <Button onClick={() => voteForApp(APP_ID)} disabled={isLoading || hasVoted}>
       {isLoading ? "Loading..." : hasVoted ? "Voted" : "Vote"}
     </Button>
   );
