@@ -14,7 +14,7 @@ export class VotingConfigurationError extends Error {
 /**
  * Check if a user has voted for a specific app in the current epoch
  */
-export function hasUserVotedForApp(userVotes: bigint[], appId: bigint): boolean {
+export function hasUserVotedForApp(userVotes: readonly bigint[], appId: bigint): boolean {
   return userVotes.some(vote => vote === appId)
 }
 

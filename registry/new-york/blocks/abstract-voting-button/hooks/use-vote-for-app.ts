@@ -1,8 +1,9 @@
 "use client"
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useAccount } from "wagmi"
+import { useAccount, useReadContract } from "wagmi"
 import { useAbstractClient } from "@abstract-foundation/agw-react"
+import { publicClient } from "@/config/viem-clients"
 import { ABSTRACT_VOTING_ADDRESS, ABSTRACT_VOTING_ABI } from "../lib/voting-contract"
 import { formatAppId, isValidAppId } from "../lib/voting-utils"
 
@@ -23,9 +24,26 @@ interface VoteForAppResult {
  * Hook to submit a vote for an app using Abstract Global Wallet
  */
 export function useVoteForApp({ onSuccess, onError }: UseVoteForAppProps = {}): VoteForAppResult {
-  const { isConnected } = useAccount()
+  const { isConnected, address } = useAccount()
   const { data: abstractClient } = useAbstractClient()
   const queryClient = useQueryClient()
+
+  // Get the current epoch to build the proper query key
+  const { data: currentEpoch } = useReadContract({
+    address: ABSTRACT_VOTING_ADDRESS,
+    abi: ABSTRACT_VOTING_ABI,
+    functionName: "currentEpoch",
+    query: { enabled: false }, // Don't fetch, just get the query key structure
+  })
+
+  // Get the getUserVotes query key for invalidation
+  const { queryKey } = useReadContract({
+    address: ABSTRACT_VOTING_ADDRESS,
+    abi: ABSTRACT_VOTING_ABI,
+    functionName: "getUserVotes",
+    args: address && currentEpoch ? [address, currentEpoch] : undefined,
+    query: { enabled: false }, // Don't fetch, just get the query key
+  })
 
   // Create mutation for voting
   const mutation = useMutation({
@@ -52,13 +70,15 @@ export function useVoteForApp({ onSuccess, onError }: UseVoteForAppProps = {}): 
         args: [formattedAppId],
       })
 
+      // Wait for transaction to be confirmed on-chain
+      await publicClient.waitForTransactionReceipt({ hash })
+
       return hash
     },
-    onSuccess: (data) => {
-      // Invalidate queries to refresh vote status
-      queryClient.invalidateQueries({
-        queryKey: ["contract", { address: ABSTRACT_VOTING_ADDRESS }]
-      })
+    onSuccess: async (data) => {
+      // Invalidate getUserVotes queries using the proper wagmi query key
+      await queryClient.invalidateQueries({ queryKey })
+      
       onSuccess?.(data)
     },
     onError: (error: Error) => {

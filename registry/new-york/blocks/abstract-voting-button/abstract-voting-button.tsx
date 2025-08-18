@@ -5,7 +5,6 @@ import { Button } from "@/registry/new-york/ui/button";
 import { useAccount } from "wagmi";
 import { cn } from "@/lib/utils";
 import { type ClassValue } from "clsx";
-import { useState } from "react";
 import { toast } from "sonner";
 import { abstract } from "viem/chains";
 import { useUserVoteStatus } from "@/registry/new-york/blocks/abstract-voting-button/hooks/use-user-vote-status";
@@ -39,31 +38,26 @@ export function AbstractVotingButton({
 }: AbstractVotingButtonProps) {
   const { isConnected, chainId } = useAccount();
   const { login } = useLoginWithAbstract();
-  const [isVoting, setIsVoting] = useState(false);
 
   // Check if user has already voted for this app
-  const { hasVoted, isLoading: isStatusLoading } = useUserVoteStatus({
+  const {
+    hasVoted,
+    isLoading: isStatusLoading,
+  } = useUserVoteStatus({
     appId,
     enabled: isConnected,
   });
 
-  // Hook to submit vote
-  const {
-    voteForApp,
-    isLoading: isVoteLoading,
-    error,
-  } = useVoteForApp({
+  const { voteForApp, isLoading: isVoteLoading } = useVoteForApp({
     onSuccess: (data) => {
-      setIsVoting(false);
       onVoteSuccess?.(data);
     },
     onError: (error) => {
-      setIsVoting(false);
       onVoteError?.(error);
     },
   });
 
-  const isLoading = isStatusLoading || isVoteLoading || isVoting;
+  const isLoading = isStatusLoading || isVoteLoading;
 
   // Handle vote submission
   const handleVote = async () => {
@@ -84,11 +78,9 @@ export function AbstractVotingButton({
       return;
     }
 
-    setIsVoting(true);
     try {
       await voteForApp(appId);
     } catch (err) {
-      setIsVoting(false);
       // Error handling is done in the hook
     }
   };
@@ -111,7 +103,7 @@ export function AbstractVotingButton({
     if (isLoading) {
       return (
         <>
-          {isVoting ? "Voting..." : "Loading..."}
+          Loading...
           <AbstractLogo className="ml-2 animate-spin" />
         </>
       );
