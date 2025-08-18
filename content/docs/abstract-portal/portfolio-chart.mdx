@@ -54,22 +54,19 @@ export default function Portfolio() {
 ### With Dynamic Address
 
 ```tsx
-import { PortfolioChart } from "@/components/portfolio-chart"
-import { useAccount } from "wagmi"
+"use client";
+
+import { PortfolioChart } from "@/components/portfolio-chart";
+import { useAccount } from "wagmi";
 
 export default function UserPortfolio() {
-  const { address } = useAccount()
-  
+  const { address } = useAccount();
+
   if (!address) {
-    return <div>Please connect your wallet</div>
+    return <div>Please connect your wallet</div>;
   }
-  
-  return (
-    <PortfolioChart 
-      address={address}
-      defaultPeriod="7d"
-    />
-  )
+
+  return <PortfolioChart address={address} defaultPeriod="7d" />;
 }
 ```
 
@@ -81,7 +78,7 @@ export default function UserPortfolio() {
 | --- | --- | --- | --- |
 | `address` | `string` | - | **Required.** The Abstract Global Wallet address to display portfolio data for |
 | `className` | `ClassValue` | `undefined` | Custom CSS classes for styling |
-| `defaultPeriod` | `"1h" \| "1d" \| "7d" \| "30d" \| "1y"` | `"7d"` | The default time period to display when the component loads |
+| `defaultPeriod` | `"1d" \| "7d" \| "30d"` | `"7d"` | The default time period to display when the component loads |
 
 ## What's included
 
