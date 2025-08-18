@@ -48,70 +48,53 @@ Access session key functionality with the provided hooks:
 
 <CodeCollapsibleWrapper>
 ```tsx
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useAccount } from "wagmi"
-import { useSessionKey } from "@/hooks/use-session-key"
-import { useCreateSessionKey } from "@/hooks/use-create-session-key"
-import { useRevokeSessionKey } from "@/hooks/use-revoke-session-key"
+import { Button } from "@/components/ui/button";
+import { useAccount } from "wagmi";
+import { useSessionKey } from "@/hooks/use-session-key";
+import { useCreateSessionKey } from "@/hooks/use-create-session-key";
+import { useRevokeSessionKey } from "@/hooks/use-revoke-session-key";
+import { ConnectWalletButton } from "@/components/connect-wallet-button";
 
 export default function SessionKeyHooksDemo() {
-  const { address, isConnected } = useAccount()
-  const { data: sessionData, isLoading } = useSessionKey()
-  const createSessionMutation = useCreateSessionKey()
-  const { revokeSession, isPending: isRevoking } = useRevokeSessionKey()
+  const { isConnected } = useAccount();
+  const { data: sessionData, isLoading } = useSessionKey();
+  const createSessionMutation = useCreateSessionKey();
+  const { revokeSession, isPending: isRevoking } = useRevokeSessionKey();
 
-  const hasActiveSession = !!sessionData
+  const hasActiveSession = !!sessionData;
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Session Key Management</CardTitle>
-        <CardDescription>
-          Create and manage session keys for seamless transactions
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <div className="w-full max-w-md space-y-4">
+      <div className="space-y-4">
         {!isConnected ? (
-          <p className="text-muted-foreground">Connect your wallet first</p>
+          <ConnectWalletButton />
         ) : !hasActiveSession ? (
           <Button
             onClick={() => createSessionMutation.mutate()}
             disabled={createSessionMutation.isPending || isLoading}
             className="w-full"
           >
-            {createSessionMutation.isPending ? "Creating..." : "Create Session Key"}
+            {createSessionMutation.isPending
+              ? "Creating..."
+              : "Create Session Key"}
           </Button>
         ) : (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-950 rounded">
-              <span className="text-sm">Session Status:</span>
-              <div className="flex items-center space-x-2">
-                <div className="h-2 w-2 bg-green-500 rounded-full" />
-                <span className="text-sm text-green-600 dark:text-green-400">Active</span>
-              </div>
-            </div>
-            <Button
-              onClick={() => sessionData?.session && revokeSession(sessionData.session)}
-              disabled={isRevoking}
-              variant="destructive"
-              className="w-full"
-            >
-              {isRevoking ? "Revoking..." : "Revoke Session Key"}
-            </Button>
-          </div>
+          <Button
+            onClick={() =>
+              sessionData?.session && revokeSession(sessionData.session)
+            }
+            disabled={isRevoking}
+            variant="destructive"
+            className="w-full"
+          >
+            {isRevoking ? "Revoking..." : "Revoke Session Key"}
+          </Button>
         )}
-        
-        {address && (
-          <div className="pt-2 border-t text-xs text-muted-foreground">
-            Address: {address.slice(0, 6)}...{address.slice(-4)}
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  )
+      </div>
+    </div>
+  );
 }
 ```
 </CodeCollapsibleWrapper>
@@ -122,12 +105,12 @@ Use the session key transaction hook for seamless transactions without signature
 
 <CodeCollapsibleWrapper>
 ```tsx
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { useSessionKeyTransaction } from "@/hooks/use-session-key-transaction"
-import { parseEther } from "viem"
-import { toast } from "sonner"
+import { Button } from "@/components/ui/button";
+import { useSessionKeyTransaction } from "@/hooks/use-session-key-transaction";
+import { toast } from "sonner";
+import { useAccount } from "wagmi";
 
 // Example contract ABI (replace with your contract's ABI)
 const EXAMPLE_CONTRACT_ABI = [
@@ -137,88 +120,44 @@ const EXAMPLE_CONTRACT_ABI = [
     stateMutability: "payable",
     inputs: [
       { name: "to", type: "address" },
-      { name: "amount", type: "uint256" }
+      { name: "amount", type: "uint256" },
     ],
-    outputs: []
-  }
-] as const
+    outputs: [],
+  },
+] as const;
 
 export default function SessionKeyTransactionDemo() {
+  const { address } = useAccount();
   const { mutate: submitTransaction, isPending } = useSessionKeyTransaction({
     onSuccess: (data) => {
-      toast.success(`Transaction successful! Hash: ${data.hash}`)
+      toast.success(`Transaction successful! Hash: ${data.hash}`);
     },
     onError: (error) => {
-      toast.error(`Transaction failed: ${error.message}`)
-    }
-  })
+      toast.error(`Transaction failed: ${error.message}`);
+    },
+  });
 
   const handleMintToken = () => {
     submitTransaction({
       abi: EXAMPLE_CONTRACT_ABI,
       address: "0xC4822AbB9F05646A9Ce44EFa6dDcda0Bf45595AA", // Contract address
       functionName: "mint",
-      args: ["0x1234567890123456789012345678901234567890", parseEther("1")],
-      value: parseEther("0") // No ETH value for this transaction
-    })
-  }
+      args: [address!, BigInt(1)],
+    });
+  };
 
   return (
     <div className="space-y-4">
       <h3>Submit Transaction Without Signature</h3>
-      <Button 
-        onClick={handleMintToken}
-        disabled={isPending}
-        className="w-full"
-      >
+      <Button onClick={handleMintToken} disabled={isPending}>
         {isPending ? "Minting..." : "Mint Token (No Signature Required)"}
       </Button>
     </div>
-  )
+  );
 }
 ```
 </CodeCollapsibleWrapper>
 
-## Configuration
-
-### Session Key Policies
-
-Configure which contracts and functions your session keys can interact with by editing `config/session-key-policies.ts`:
-
-<CodeCollapsibleWrapper>
-```ts
-import {
-  LimitType,
-  type SessionConfig,
-} from "@abstract-foundation/agw-client/sessions"
-import { parseEther, toFunctionSelector } from "viem"
-
-export const CALL_POLICIES = [
-  {
-    target: "0xYourContractAddress" as `0x${string}`,
-    selector: toFunctionSelector("yourFunction(address,uint256)"),
-    valueLimit: {
-      limitType: LimitType.Unlimited,
-      limit: BigInt(0),
-      period: BigInt(0),
-    },
-    maxValuePerUse: BigInt(0),
-    constraints: [],
-  }
-]
-
-export const SESSION_KEY_CONFIG: Omit<SessionConfig, "signer"> = {
-  expiresAt: BigInt(Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30), // 30 days
-  feeLimit: {
-    limitType: LimitType.Lifetime,
-    limit: parseEther("1"), // 1 ETH lifetime gas limit
-    period: BigInt(0),
-  },
-  callPolicies: CALL_POLICIES,
-  transferPolicies: [],
-}
-```
-</CodeCollapsibleWrapper>
 
 ## What's included
 

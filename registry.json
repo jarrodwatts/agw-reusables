@@ -197,6 +197,10 @@
           "type": "registry:hook"
         },
         {
+          "path": "registry/new-york/blocks/session-keys/hooks/use-session-key-transaction.ts",
+          "type": "registry:hook"
+        },
+        {
           "path": "registry/new-york/blocks/session-keys/lib/get-stored-session-key.ts",
           "type": "registry:lib"
         },
@@ -342,6 +346,10 @@
         },
         {
           "path": "registry/new-york/blocks/session-keys/hooks/use-revoke-session-key.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "registry/new-york/blocks/session-keys/hooks/use-session-key-transaction.ts",
           "type": "registry:hook"
         },
         {

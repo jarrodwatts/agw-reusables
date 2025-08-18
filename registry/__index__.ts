@@ -316,6 +316,10 @@ export const Index: Record<string, any> = {
       type: "registry:hook",
       target: ""
     }, {
+      path: "registry/new-york/blocks/session-keys/hooks/use-session-key-transaction.ts",
+      type: "registry:hook",
+      target: ""
+    }, {
       path: "registry/new-york/blocks/session-keys/lib/get-stored-session-key.ts",
       type: "registry:lib",
       target: ""
@@ -405,6 +409,10 @@ export const Index: Record<string, any> = {
       target: ""
     }, {
       path: "registry/new-york/blocks/session-keys/hooks/use-revoke-session-key.ts",
+      type: "registry:hook",
+      target: ""
+    }, {
+      path: "registry/new-york/blocks/session-keys/hooks/use-session-key-transaction.ts",
       type: "registry:hook",
       target: ""
     }, {
