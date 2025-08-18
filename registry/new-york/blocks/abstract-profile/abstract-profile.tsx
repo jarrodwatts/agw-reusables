@@ -1,7 +1,11 @@
 "use client";
 
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/registry/new-york/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/registry/new-york/ui/avatar";
 import {
   Tooltip,
   TooltipContent,
@@ -16,7 +20,7 @@ import { cn } from "@/lib/utils";
 import { type ClassValue } from "clsx";
 
 interface AbstractProfileProps {
-  address?: string; // Optional - defaults to connected wallet
+  address?: `0x${string}`; // Optional - defaults to connected wallet
   fallback?: string; // Optional - defaults to first 2 chars of address
   shineColor?: string; // Optional now, will use tier color if not provided
   size?: "sm" | "md" | "lg";
@@ -32,7 +36,7 @@ interface AbstractProfileProps {
  * - Fallback support for missing profile data
  * - Responsive size variants
  * - Optional tooltips with display names
- * 
+ *
  * @param address - Optional wallet address to fetch profile for (defaults to connected wallet)
  * @param fallback - Optional fallback text to display if image fails to load (defaults to first 2 chars of address)
  * @param shineColor - Optional custom border color (defaults to tier color)
@@ -48,13 +52,18 @@ export function AbstractProfile({
   showTooltip = true,
   className,
 }: AbstractProfileProps) {
-  const { address: connectedAddress } = useAccount();
+  const {
+    address: connectedAddress,
+    isConnecting,
+    isReconnecting,
+  } = useAccount();
 
   // Use provided address or fall back to connected wallet address
   const address = providedAddress || connectedAddress;
 
   // Generate fallback from address if not provided
-  const fallback = providedFallback || (address ? address.slice(2, 4).toUpperCase() : "??");
+  const fallback =
+    providedFallback || (address ? address.slice(2, 4).toUpperCase() : "??");
 
   const sizeClasses = {
     sm: "h-8 w-8",
@@ -64,8 +73,8 @@ export function AbstractProfile({
 
   const { data: profile, isLoading } = useAbstractProfileByAddress(address);
 
-  // If no address available, show a skeleton loading state
-  if (!address) {
+  // Show loading state if wallet is connecting/reconnecting or if no address available yet
+  if (!address || isConnecting || isReconnecting || isLoading) {
     return (
       <div
         className={cn(`relative rounded-full ${sizeClasses[size]}`, className)}
@@ -87,23 +96,10 @@ export function AbstractProfile({
   const displayName = getDisplayName(profile?.user?.name || "", address);
 
   // Use tier-based color if shineColor not provided
-  const tierColor = profile?.user?.tier ? getTierColor(profile.user.tier) : getTierColor(1);
+  const tierColor = profile?.user?.tier
+    ? getTierColor(profile.user.tier)
+    : getTierColor(1);
   const finalBorderColor = shineColor || tierColor;
-
-  if (isLoading) {
-    return (
-      <div
-        className={cn(`relative rounded-full ${sizeClasses[size]}`, className)}
-        style={{ border: `2px solid ${finalBorderColor}` }}
-      >
-        <div className="absolute inset-0 rounded-full overflow-hidden">
-          <Avatar className={`w-full h-full transition-transform duration-200 hover:scale-110`}>
-            <Skeleton className={`w-full h-full rounded-full bg-muted/50`} />
-          </Avatar>
-        </div>
-      </div>
-    );
-  }
 
   const avatarElement = (
     <div
@@ -131,9 +127,7 @@ export function AbstractProfile({
 
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
-        {avatarElement}
-      </TooltipTrigger>
+      <TooltipTrigger asChild>{avatarElement}</TooltipTrigger>
       <TooltipContent>
         <p>{displayName}</p>
       </TooltipContent>

@@ -9,9 +9,9 @@ import { useAccount } from "wagmi";
  * @returns The profile data with loading and error states
  */
 export function useAbstractProfile() {
-  const { address } = useAccount();
+  const { address, isConnecting, isReconnecting } = useAccount();
 
-  return useQuery({
+  const query = useQuery({
     queryKey: ["abstract-profile", address],
     queryFn: async () => {
       if (!address) {
@@ -23,6 +23,11 @@ export function useAbstractProfile() {
     staleTime: 1000 * 60 * 1, // 1 minute
     refetchOnWindowFocus: false,
   });
+
+  return {
+    ...query,
+    isLoading: query.isLoading || isConnecting || isReconnecting,
+  };
 }
 
 /**
@@ -30,7 +35,9 @@ export function useAbstractProfile() {
  * @param address - The address to get the profile for
  * @returns The profile data with loading and error states
  */
-export function useAbstractProfileByAddress(address: string | undefined) {
+export function useAbstractProfileByAddress(
+  address: `0x${string}` | undefined
+) {
   return useQuery({
     queryKey: ["abstract-profile", address],
     queryFn: async () => {
