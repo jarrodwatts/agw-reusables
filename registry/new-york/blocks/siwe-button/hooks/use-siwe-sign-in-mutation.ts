@@ -4,11 +4,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAccount, useSignMessage } from "wagmi";
 import { createSiweMessage } from "viem/siwe";
 import { toast } from "sonner";
-import { AuthResponse, SignInRequest, ClientSiweConfigurationError } from "@/registry/new-york/blocks/siwe-button/lib/types";
+import {
+  AuthResponse,
+  SignInRequest,
+  ClientSiweConfigurationError,
+} from "@/types/siwe-auth";
 
 async function fetchNonce(): Promise<string> {
   const response = await fetch("/api/auth/nonce");
-  
+
   // Check if it's a JSON error response (configuration error)
   const contentType = response.headers.get("content-type");
   if (contentType?.includes("application/json")) {
@@ -19,7 +23,7 @@ async function fetchNonce(): Promise<string> {
     }
     throw new Error(errorData.message || "Failed to fetch nonce");
   }
-  
+
   return response.text();
 }
 
@@ -31,14 +35,14 @@ async function verifySignature(data: SignInRequest): Promise<AuthResponse> {
     },
     body: JSON.stringify(data),
   });
-  
+
   const result = await response.json();
-  
+
   // Check for configuration errors and throw them to bubble up
   if (result.isConfigurationError) {
     throw new ClientSiweConfigurationError(result.message);
   }
-  
+
   return result;
 }
 

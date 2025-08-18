@@ -253,7 +253,9 @@ This command installs the following files:
 
 - `/lib`
   - [`auth-server.ts`](#auth-serverts) - Server-side authentication utilities
-  - [`types.ts`](#typests) - TypeScript type definitions
+
+- `/types`
+  - [`siwe-auth.ts`](#typests) - TypeScript type definitions
 
 ### `siwe-button.tsx`
 
@@ -279,11 +281,11 @@ React Query mutation hook for deleting the user's session (signing out).
 
 <ComponentSource src="registry/new-york/blocks/siwe-button/hooks/use-siwe-logout-mutation.ts" />
 
-### `types.ts`
+### `types/siwe-auth.ts`
 
 TypeScript type definitions for SIWE authentication including session data, authentication responses, and configuration error handling.
 
-<ComponentSource src="registry/new-york/blocks/siwe-button/lib/types.ts" />
+<ComponentSource src="/types/siwe-auth.ts" />
 
 ### `auth.ts`
 

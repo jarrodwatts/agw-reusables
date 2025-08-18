@@ -75,19 +75,10 @@ if (isAbstractNetwork(chainId)) {
 
 This command installs the following files:
 
-- `/components`
-  - [`abstract-contracts.tsx`](#abstract-contractstsx) - Main exports for contracts, utilities, and types
-
-- `/lib`
+- `/types`
   - [`contracts.ts`](#contractsts) - Contract addresses, ABIs, and configuration
   - [`utils.ts`](#utilsts) - Network-aware utility functions for address resolution
   - [`types.ts`](#typests) - TypeScript type definitions
-
-### `abstract-contracts.tsx`
-
-A configuration module that exports contract addresses, ABIs, and utility functions for Abstract's token and DEX infrastructure with automatic network detection.
-
-<ComponentSource src="registry/new-york/blocks/abstract-contracts/abstract-contracts.tsx" />
 
 ### `contracts.ts`
 
@@ -127,11 +118,11 @@ Utility functions for network-aware contract address resolution with automatic m
 | `isAbstractNetwork(chainId)` | Check if chain ID is Abstract mainnet or testnet |
 | `getNetworkName(chainId)` | Get human-readable network name |
 
-### `types.ts`
+### `types/contracts.ts`
 
 TypeScript type definitions for contract configuration, network IDs, and utility function options.
 
-<ComponentSource src="registry/new-york/blocks/abstract-contracts/lib/types.ts" />
+<ComponentSource src="/types/contracts.ts" />
 
 #### Types
 

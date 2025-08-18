@@ -1,19 +1,25 @@
 "use client";
 
-import React from 'react';
-import { ScrollArea } from '@/registry/new-york/ui/scroll-area';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/registry/new-york/ui/card';
-import { Wallet } from 'lucide-react';
-import { useAccount } from 'wagmi';
-import { AbstractProfile } from '@/registry/new-york/blocks/abstract-profile/abstract-profile';
-import AbstractProfileDemo from '@/registry/new-york/examples/abstract-profile-demo';
-import ConnectWalletButtonDemo from '@/registry/new-york/examples/connect-wallet-button-demo';
-import SiweButtonDemo from '@/registry/new-york/examples/siwe-button-demo';
-import SessionKeysDemo from '@/registry/new-york/examples/session-keys-demo';
-import PortfolioChartDemo from '@/registry/new-york/examples/portfolio-chart-demo';
-import AbstractAppVotingDemo from '@/registry/new-york/examples/abstract-app-voting-demo';
-import NFTGalleryDemo from '@/registry/new-york/examples/nft-gallery-demo';
-import OnboardingDialogDemo from '@/registry/new-york/examples/onboarding-dialog-demo';
+import React from "react";
+import { ScrollArea } from "@/registry/new-york/ui/scroll-area";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/registry/new-york/ui/card";
+import { Wallet } from "lucide-react";
+import { useAccount } from "wagmi";
+import { AbstractProfile } from "@/registry/new-york/blocks/abstract-profile/abstract-profile";
+import AbstractProfileDemo from "@/registry/new-york/examples/abstract-profile-demo";
+import ConnectWalletButtonDemo from "@/registry/new-york/examples/connect-wallet-button-demo";
+import SiweButtonDemo from "@/registry/new-york/examples/siwe-button-demo";
+import SessionKeysDemo from "@/registry/new-york/examples/session-keys-demo";
+import PortfolioChartDemo from "@/registry/new-york/examples/portfolio-chart-demo";
+import AbstractAppVotingDemo from "@/registry/new-york/examples/abstract-app-voting-demo";
+import NFTGalleryDemo from "@/registry/new-york/examples/nft-card-demo";
+import OnboardingDialogDemo from "@/registry/new-york/examples/onboarding-dialog-demo";
 
 function ComponentShowcase() {
   const { address, isConnected } = useAccount();
@@ -86,7 +92,6 @@ function ComponentShowcase() {
   );
 }
 
-
 export function ThemePreview() {
   return (
     <div className="w-full h-full theme-container relative">
@@ -95,8 +100,8 @@ export function ThemePreview() {
           <div className="mb-6">
             <h1 className="text-3xl font-bold mb-2">Component Preview</h1>
             <p className="text-muted-foreground">
-              Preview how your theme looks across components.
-              Adjust colors in the sidebar to see changes in real-time.
+              Preview how your theme looks across components. Adjust colors in
+              the sidebar to see changes in real-time.
             </p>
           </div>
           <ComponentShowcase />

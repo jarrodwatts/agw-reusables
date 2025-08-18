@@ -46,13 +46,9 @@ export const Index: Record<string, any> = {
     type: "registry:lib",
     registryDependencies: [],
     files: [{
-      path: "registry/new-york/blocks/abstract-contracts/abstract-contracts.tsx",
+      path: "types/contracts.ts",
       type: "registry:lib",
-      target: ""
-    }, {
-      path: "registry/new-york/blocks/abstract-contracts/lib/types.ts",
-      type: "registry:lib",
-      target: ""
+      target: "types/contracts.ts"
     }, {
       path: "registry/new-york/blocks/abstract-contracts/lib/contracts.ts",
       type: "registry:lib",
@@ -188,31 +184,23 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
-  "nft-gallery": {
-    name: "nft-gallery",
-    description: "A responsive NFT gallery component that displays a user's NFTs from the Abstract backend with loading states and customizable layout options",
+  "nft-card": {
+    name: "nft-card",
+    description: "A single NFT card component that displays an NFT with image, name, collection, and balance",
     type: "registry:component",
-    registryDependencies: ["card","badge","skeleton","aspect-ratio","alert"],
+    registryDependencies: ["card","badge","aspect-ratio"],
     files: [{
-      path: "registry/new-york/blocks/nft-gallery/nft-gallery.tsx",
+      path: "registry/new-york/blocks/nft-card/nft-card.tsx",
       type: "registry:component",
       target: ""
     }, {
-      path: "registry/new-york/blocks/nft-gallery/hooks/use-nfts.ts",
-      type: "registry:hook",
-      target: ""
-    }, {
-      path: "registry/new-york/blocks/nft-gallery/lib/types.ts",
+      path: "types/nft-card.ts",
       type: "registry:lib",
-      target: ""
-    }, {
-      path: "app/api/user-nfts/[address]/route.ts",
-      type: "registry:lib",
-      target: "app/api/user-nfts/[address]/route.ts"
+      target: "types/nft-card.ts"
     }],
     component: React.lazy(async () => {
-      const mod = await import("@/registry/new-york/examples/nft-gallery-demo.tsx")
-      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "nft-gallery"
+      const mod = await import("@/registry/new-york/examples/nft-card-demo.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "nft-card"
       return { default: mod.default || mod[exportName] }
     }),
     categories: undefined,
@@ -264,9 +252,9 @@ export const Index: Record<string, any> = {
       type: "registry:hook",
       target: ""
     }, {
-      path: "registry/new-york/blocks/siwe-button/lib/types.ts",
+      path: "types/siwe-auth.ts",
       type: "registry:lib",
-      target: ""
+      target: "types/siwe-auth.ts"
     }, {
       path: "config/auth.ts",
       type: "registry:lib",
@@ -482,9 +470,9 @@ export const Index: Record<string, any> = {
       type: "registry:hook",
       target: ""
     }, {
-      path: "registry/new-york/blocks/siwe-button/lib/types.ts",
+      path: "types/siwe-auth.ts",
       type: "registry:lib",
-      target: ""
+      target: "types/siwe-auth.ts"
     }, {
       path: "config/auth.ts",
       type: "registry:lib",
@@ -532,9 +520,9 @@ export const Index: Record<string, any> = {
       type: "registry:hook",
       target: ""
     }, {
-      path: "registry/new-york/blocks/use-optimistic-write-contract/lib/types.ts",
+      path: "types/optimistic-transactions.ts",
       type: "registry:lib",
-      target: ""
+      target: "types/optimistic-transactions.ts"
     }, {
       path: "registry/new-york/blocks/use-optimistic-write-contract/lib/abstract-api.ts",
       type: "registry:lib",

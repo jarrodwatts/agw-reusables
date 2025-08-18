@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLoginWithAbstract } from "@abstract-foundation/agw-react";
 import { toast } from "sonner";
-import { ClientSiweConfigurationError } from "@/registry/new-york/blocks/siwe-button/lib/types";
+import { ClientSiweConfigurationError } from "@/types/siwe-auth";
 
 interface LogoutResponse {
   ok: boolean;

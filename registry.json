@@ -126,8 +126,9 @@
           "type": "registry:hook"
         },
         {
-          "path": "registry/new-york/blocks/siwe-button/lib/types.ts",
-          "type": "registry:lib"
+          "path": "types/siwe-auth.ts",
+          "type": "registry:lib",
+          "target": "types/siwe-auth.ts"
         },
         {
           "path": "config/auth.ts",
@@ -291,8 +292,9 @@
           "type": "registry:hook"
         },
         {
-          "path": "registry/new-york/blocks/siwe-button/lib/types.ts",
-          "type": "registry:lib"
+          "path": "types/siwe-auth.ts",
+          "type": "registry:lib",
+          "target": "types/siwe-auth.ts"
         },
         {
           "path": "config/auth.ts",
@@ -428,8 +430,9 @@
           "type": "registry:hook"
         },
         {
-          "path": "registry/new-york/blocks/use-optimistic-write-contract/lib/types.ts",
-          "type": "registry:lib"
+          "path": "types/optimistic-transactions.ts",
+          "type": "registry:lib",
+          "target": "types/optimistic-transactions.ts"
         },
         {
           "path": "registry/new-york/blocks/use-optimistic-write-contract/lib/abstract-api.ts",
@@ -446,12 +449,9 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/new-york/blocks/abstract-contracts/abstract-contracts.tsx",
-          "type": "registry:lib"
-        },
-        {
-          "path": "registry/new-york/blocks/abstract-contracts/lib/types.ts",
-          "type": "registry:lib"
+          "path": "types/contracts.ts",
+          "type": "registry:lib",
+          "target": "types/contracts.ts"
         },
         {
           "path": "registry/new-york/blocks/abstract-contracts/lib/contracts.ts",
@@ -500,35 +500,25 @@
       ]
     },
     {
-      "name": "nft-gallery",
+      "name": "nft-card",
       "type": "registry:component",
-      "title": "NFT Gallery",
-      "description": "A responsive NFT gallery component that displays a user's NFTs from the Abstract backend with loading states and customizable layout options",
-      "dependencies": ["@tanstack/react-query", "wagmi", "lucide-react"],
+      "title": "NFT Card",
+      "description": "A single NFT card component that displays an NFT with image, name, collection, and balance",
+      "dependencies": [],
       "registryDependencies": [
         "card",
         "badge",
-        "skeleton",
-        "aspect-ratio",
-        "alert"
+        "aspect-ratio"
       ],
       "files": [
         {
-          "path": "registry/new-york/blocks/nft-gallery/nft-gallery.tsx",
+          "path": "registry/new-york/blocks/nft-card/nft-card.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/new-york/blocks/nft-gallery/hooks/use-nfts.ts",
-          "type": "registry:hook"
-        },
-        {
-          "path": "registry/new-york/blocks/nft-gallery/lib/types.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "app/api/user-nfts/[address]/route.ts",
+          "path": "types/nft-card.ts",
           "type": "registry:lib",
-          "target": "app/api/user-nfts/[address]/route.ts"
+          "target": "types/nft-card.ts"
         }
       ]
     },

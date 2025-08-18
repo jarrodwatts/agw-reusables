@@ -97,20 +97,6 @@ export function useOnboarding(steps: OnboardingSteps): UseOnboardingReturn {
       : missingAuthState || missingSessionState)
   );
 
-  // Debug logging
-  console.log("🔍 useOnboarding Debug:", {
-    isConnected,
-    isConnecting,
-    isReconnecting,
-    "authQuery.isLoading": authQuery.isLoading,
-    "authQuery.data": !!authQuery.data,
-    "authQuery.error": !!authQuery.error,
-    "sessionQuery.isLoading": sessionQuery.isLoading,
-    "sessionQuery.data": !!sessionQuery.data,
-    "sessionQuery.error": !!sessionQuery.error,
-    isLoading,
-  });
-
   // Aggregate error states
   const isError = useMemo(() => {
     return !!(authQuery.error || sessionQuery.error);
@@ -156,9 +142,6 @@ export function useOnboarding(steps: OnboardingSteps): UseOnboardingReturn {
       // Manual dialog show, no action needed on completion
     });
   }, [steps]);
-
-  // Final debug log before return
-  console.log("🔍 Final return values:", { ready, isLoading, isError });
 
   return {
     ready,

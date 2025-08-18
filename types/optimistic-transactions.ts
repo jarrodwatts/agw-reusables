@@ -41,4 +41,3 @@ export interface AbstractRpcResponse {
     message: string
   }
 }
-

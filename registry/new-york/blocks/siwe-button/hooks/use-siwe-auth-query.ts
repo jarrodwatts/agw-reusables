@@ -2,10 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
-import {
-  AuthResponse,
-  ClientSiweConfigurationError,
-} from "@/registry/new-york/blocks/siwe-button/lib/types";
+import { AuthResponse, ClientSiweConfigurationError } from "@/types/siwe-auth";
 
 async function fetchAuthUser(): Promise<AuthResponse> {
   const response = await fetch("/api/auth/user");

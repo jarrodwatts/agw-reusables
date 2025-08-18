@@ -1,14 +1,14 @@
 ---
-title: NFT Gallery
-description: A responsive NFT gallery component that displays a user's NFTs from the Abstract backend
+title: NFT Card
+description: A single NFT card component that displays an NFT with image, name, collection, and balance
 ---
 
-<ComponentPreview name="nft-gallery" />
+<ComponentPreview name="nft-card" />
 
 ## Installation
 
 ```bash
-npx shadcn@latest add "https://agw-reusables.vercel.app/r/nft-gallery.json"
+npx shadcn@latest add "https://agw-reusables.vercel.app/r/nft-card.json"
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ npx shadcn@latest add "https://agw-reusables.vercel.app/r/nft-gallery.json"
 import { NFTGallery } from "@/components/nft-gallery"
 
 export default function MyNFTs() {
-  const address = "0x1234567890abcdef1234567890abcdef12345678"
+  const address = "0x1C67724aCc76821C8aD1f1F87BA2751631BAbD0c"
   
   return (
     <NFTGallery address={address} />
@@ -30,6 +30,8 @@ export default function MyNFTs() {
 ### With Connected Wallet
 
 ```tsx
+"use client"
+
 import { NFTGallery } from "@/components/nft-gallery"
 import { useAccount } from "wagmi"
 
@@ -49,10 +51,12 @@ export default function UserNFTs() {
 ### Custom Layout
 
 ```tsx
+"use client"
+
 import { NFTGallery } from "@/components/nft-gallery"
 
 export default function CompactGallery() {
-  const address = "0x1234567890abcdef1234567890abcdef12345678"
+  const address = "0x1C67724aCc76821C8aD1f1F87BA2751631BAbD0c"
   
   return (
     <NFTGallery
@@ -60,25 +64,6 @@ export default function CompactGallery() {
       columns={{ default: 3, sm: 4, md: 6, lg: 8 }}
       showCollectionName={false}
       maxItems={20}
-    />
-  )
-}
-```
-
-### With Floor Prices
-
-```tsx
-import { NFTGallery } from "@/components/nft-gallery"
-
-export default function PremiumGallery() {
-  const address = "0x1234567890abcdef1234567890abcdef12345678"
-  
-  return (
-    <NFTGallery
-      address={address}
-      showCollectionName={true}
-      showFloorPrice={true}
-      className="p-6"
     />
   )
 }
@@ -122,19 +107,19 @@ export default function CustomNFTDisplay() {
 This command installs the following files:
 
 - `/components`
-  - [`nft-gallery.tsx`](#nft-gallerytsx) - Main NFT gallery component with responsive grid layout
+  - [`nft-card.tsx`](#nft-cardtsx) - Main NFT gallery component with responsive grid layout
 
 - `/hooks`
   - [`use-nfts.ts`](#use-nftsts) - Hook for fetching NFT data from Abstract backend
 
-- `/lib`
-  - [`types.ts`](#typests) - TypeScript definitions for NFT data structures
+- `/types`
+  - [`nft-card.ts`](#nft-cardts) - TypeScript definitions for NFT data structures
 
-### `nft-gallery.tsx`
+### `nft-card.tsx`
 
 A responsive NFT gallery component that fetches and displays NFTs from the Abstract backend API with automatic loading states, error handling, and empty state management.
 
-<ComponentSource src="registry/new-york/blocks/nft-gallery/nft-gallery.tsx" />
+<ComponentSource src="registry/new-york/blocks/nft-card/nft-card.tsx" />
 
 #### Props
 
@@ -151,24 +136,10 @@ A responsive NFT gallery component that fetches and displays NFTs from the Abstr
 
 A React Query-powered hook for fetching NFT data from the Abstract backend with built-in caching, error handling, and retry logic.
 
-<ComponentSource src="registry/new-york/blocks/nft-gallery/hooks/use-nfts.ts" />
+<ComponentSource src="registry/new-york/blocks/nft-card/hooks/use-nfts.ts" />
 
-#### Returns
-
-The hook returns a React Query result object with:
-- `data`: NFT data from the API
-- `isLoading`: Loading state
-- `error`: Error object if request fails
-- `refetch`: Function to manually refetch data
-
-### `types.ts`
+### `nft-card.ts`
 
 TypeScript interfaces for NFT data structures based on the Abstract backend API response format.
 
-<ComponentSource src="registry/new-york/blocks/nft-gallery/lib/types.ts" />
-
-#### Key Types
-
-- `NFT`: Complete NFT object with metadata, media, and collection info
-- `NFTGalleryProps`: Component props interface
-- `NFTGalleryResponse`: API response structure
+<ComponentSource src="/types/nft-card.ts" />

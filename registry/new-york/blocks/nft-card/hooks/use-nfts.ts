@@ -1,0 +1,31 @@
+import { useQuery } from "@tanstack/react-query";
+import type { NFTsResponse } from "@/types/nft-card";
+
+async function fetchUserNFTs(address: string): Promise<NFTsResponse> {
+  if (!address) {
+    throw new Error("Address is required");
+  }
+
+  const response = await fetch(`/api/user-nfts/${address}`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch NFTs: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  console.log(data);
+
+  return data;
+}
+
+export function useNFTs(address: string, enabled = true) {
+  return useQuery({
+    queryKey: ["nfts", address],
+    queryFn: () => fetchUserNFTs(address),
+    enabled: enabled && !!address,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  });
+}

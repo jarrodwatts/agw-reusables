@@ -1,4 +1,3 @@
-
 export interface SessionData {
   nonce?: string;
   isAuthenticated?: boolean;

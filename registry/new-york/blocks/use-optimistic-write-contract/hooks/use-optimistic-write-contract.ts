@@ -5,7 +5,7 @@ import { useAccount, useWalletClient } from "wagmi"
 import { type WriteContractParameters } from "wagmi/actions"
 import { encodeFunctionData } from "viem"
 import type { Abi, ContractFunctionName } from "viem"
-import type { OptimisticTransactionResponse } from "../lib/types"
+import type { OptimisticTransactionResponse } from "../types/optimistic-transactions"
 import { sendRawTransactionWithDetailedOutput } from "../lib/abstract-api"
 
 type OptimisticWriteConfig<
