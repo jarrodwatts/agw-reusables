@@ -20,6 +20,8 @@ npx shadcn@latest add "https://agw-reusables.vercel.app/r/abstract-app-voting.js
 ### Basic Usage
 
 ```tsx
+"use client"
+
 import { AbstractVotingButton } from "@/components/abstract-voting-button"
 
 export default function VotingExample() {
@@ -32,6 +34,8 @@ export default function VotingExample() {
 ### With Event Handlers
 
 ```tsx
+"use client"
+
 import { AbstractVotingButton } from "@/components/abstract-voting-button"
 import { toast } from "sonner"
 
@@ -57,6 +61,8 @@ export default function VotingWithToast() {
 ### Custom Button Content
 
 ```tsx
+"use client"
+
 import { AbstractVotingButton } from "@/components/abstract-voting-button"
 
 export default function CustomContentVoting() {
@@ -73,29 +79,33 @@ export default function CustomContentVoting() {
 <CodeCollapsibleWrapper>
 
 ```tsx
-import { useUserVoteStatus, useVoteForApp } from "@/components/abstract-voting-button"
-import { Button } from "@/components/ui/button"
+"use client";
+
+import { useAccount } from "wagmi";
+import { Button } from "@/components/ui/button";
+import { useUserVoteStatus } from "@/hooks/use-user-vote-status";
+import { useVoteForApp } from "@/hooks/use-vote-for-app";
 
 export default function CustomVotingImplementation() {
-  const { hasVoted, isLoading: statusLoading } = useUserVoteStatus({ 
-    appId: "1" 
-  })
-  
-  const { voteForApp, isLoading: voteLoading } = useVoteForApp({
-    onSuccess: () => console.log("Vote submitted!"),
-    onError: (error) => console.error("Vote failed:", error)
-  })
+  const { isConnected } = useAccount();
 
-  const isLoading = statusLoading || voteLoading
+  const { hasVoted, isLoading: statusLoading } = useUserVoteStatus({
+    appId: "1",
+    enabled: isConnected,
+  });
+
+  const { voteForApp, isLoading: voteLoading } = useVoteForApp({
+    onSuccess: (hash) => console.log("Vote submitted!", hash),
+    onError: (error) => console.error("Vote failed:", error),
+  });
+
+  const isLoading = statusLoading || voteLoading;
 
   return (
-    <Button 
-      onClick={() => voteForApp("1")}
-      disabled={isLoading || hasVoted}
-    >
+    <Button onClick={() => voteForApp("1")} disabled={isLoading || hasVoted}>
       {isLoading ? "Loading..." : hasVoted ? "Voted" : "Vote"}
     </Button>
-  )
+  );
 }
 ```
 
