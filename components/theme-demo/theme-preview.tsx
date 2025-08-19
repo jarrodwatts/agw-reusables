@@ -17,7 +17,6 @@ import ConnectWalletButtonDemo from "@/registry/new-york/examples/connect-wallet
 import SiweButtonDemo from "@/registry/new-york/examples/siwe-button-demo";
 import SessionKeysDemo from "@/registry/new-york/examples/session-keys-demo";
 import AbstractAppVotingDemo from "@/registry/new-york/examples/abstract-app-voting-demo";
-import NFTGalleryDemo from "@/registry/new-york/examples/nft-card-demo";
 import OnboardingDialogDemo from "@/registry/new-york/examples/onboarding-dialog-demo";
 
 function ComponentShowcase() {
@@ -68,10 +67,6 @@ function ComponentShowcase() {
         <SiweButtonDemo />
       </div>
 
-      {/* NFT Gallery - Natural height */}
-      <div className="w-full break-inside-avoid mb-4">
-        <NFTGalleryDemo />
-      </div>
 
 
       {/* Session Keys - Natural height */}
