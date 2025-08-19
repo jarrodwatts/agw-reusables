@@ -36,7 +36,9 @@ function ComponentShowcase() {
           <CardDescription>One-click wallet connection</CardDescription>
         </CardHeader>
         <CardContent className="pt-2">
-          <ConnectWalletButtonDemo />
+          <div className="flex justify-start">
+            <ConnectWalletButtonDemo />
+          </div>
         </CardContent>
         {isConnected && address && (
           <>

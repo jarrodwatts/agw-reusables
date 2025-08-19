@@ -3,10 +3,10 @@ import type {
   ContractAddress,
   ContractInfo,
 } from "@/types/contracts";
-import { ABSTRACT_CONTRACTS } from "./contracts";
 import { abstract, abstractTestnet } from "viem/chains";
 import { chain } from "@/config/chain";
 import type { Address } from "viem";
+import { ABSTRACT_CONTRACTS } from "@/registry/new-york/blocks/abstract-contracts/lib/abstract-contracts";
 
 export function getNetworkName(chainId: NetworkId): string {
   switch (chainId) {
