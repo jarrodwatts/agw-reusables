@@ -16,7 +16,6 @@ import AbstractProfileDemo from "@/registry/new-york/examples/abstract-profile-d
 import ConnectWalletButtonDemo from "@/registry/new-york/examples/connect-wallet-button-demo";
 import SiweButtonDemo from "@/registry/new-york/examples/siwe-button-demo";
 import SessionKeysDemo from "@/registry/new-york/examples/session-keys-demo";
-import PortfolioChartDemo from "@/registry/new-york/examples/portfolio-chart-demo";
 import AbstractAppVotingDemo from "@/registry/new-york/examples/abstract-app-voting-demo";
 import NFTGalleryDemo from "@/registry/new-york/examples/nft-card-demo";
 import OnboardingDialogDemo from "@/registry/new-york/examples/onboarding-dialog-demo";
@@ -74,12 +73,6 @@ function ComponentShowcase() {
         <NFTGalleryDemo />
       </div>
 
-      {/* Portfolio Chart - Natural height */}
-      <Card className="w-full break-inside-avoid mb-4">
-        <CardContent>
-          <PortfolioChartDemo />
-        </CardContent>
-      </Card>
 
       {/* Session Keys - Natural height */}
       <div className="w-full break-inside-avoid mb-4">
