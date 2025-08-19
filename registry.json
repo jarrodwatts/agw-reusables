@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "agw-reusables",
-  "homepage": "https://agw-reusables.vercel.app",
+  "homepage": "https://build.abs.xyz",
   "items": [
     {
       "name": "connect-wallet-button",
@@ -537,12 +537,27 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": ".cursor/rules/default.mdc",
+          "path": "registry/new-york/lib/.cursor/rules/abstract.mdc",
           "type": "registry:lib",
-          "target": ".cursor/rules/default.mdc"
+          "target": ".cursor/rules/abstract.mdc"
         },
         {
-          "path": ".cursor/mcp.json",
+          "path": "registry/new-york/lib/.cursor/rules/agw-reusables.mdc",
+          "type": "registry:lib",
+          "target": ".cursor/rules/agw-reusables.mdc"
+        },
+        {
+          "path": "registry/new-york/lib/.cursor/rules/session-keys.mdc",
+          "type": "registry:lib",
+          "target": ".cursor/rules/session-keys.mdc"
+        },
+        {
+          "path": "registry/new-york/lib/.cursor/rules/shadcn.mdc",
+          "type": "registry:lib",
+          "target": ".cursor/rules/shadcn.mdc"
+        },
+        {
+          "path": "registry/new-york/lib/.cursor/mcp.json",
           "type": "registry:lib",
           "target": ".cursor/mcp.json"
         }
@@ -557,7 +572,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "registry/new-york/lib/CLAUDE.md",
+          "path": "registry/new-york/lib/.claude/CLAUDE.md",
           "type": "registry:lib",
           "target": "CLAUDE.md"
         },
@@ -565,11 +580,6 @@
           "path": "registry/new-york/lib/.claude/settings.json",
           "type": "registry:lib",
           "target": ".claude/settings.json"
-        },
-        {
-          "path": "registry/new-york/lib/.mcp.json",
-          "type": "registry:lib",
-          "target": ".mcp.json"
         }
       ]
     }

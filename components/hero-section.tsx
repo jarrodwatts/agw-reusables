@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { BookOpen, Code2, ExternalLink } from "lucide-react"
-import { Button } from "@/registry/new-york/ui/button"
-import { Badge } from "@/registry/new-york/ui/badge"
+import Link from "next/link";
+import { BookOpen, Code2, ExternalLink } from "lucide-react";
+import { Button } from "@/registry/new-york/ui/button";
+import { Badge } from "@/registry/new-york/ui/badge";
 
 export function HeroSection() {
   return (
@@ -50,7 +50,8 @@ export function HeroSection() {
 
           <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground sm:text-xl">
             Focus on building the next consumer app, not reinventing the wheel.
-            A collection of React components for the most common crypto patterns.
+            A collection of React components for the most common crypto
+            patterns.
           </p>
 
           {/* Main CTAs */}
@@ -62,9 +63,14 @@ export function HeroSection() {
               </Link>
             </Button>
 
-            <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="w-full sm:w-auto"
+            >
               <Link
-                href="https://github.com/jarrodwatts/agw-reusables"
+                href="https://github.com/Abstract-Foundation/agw-reusables"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2"
@@ -75,9 +81,8 @@ export function HeroSection() {
               </Link>
             </Button>
           </div>
-
         </div>
       </div>
     </div>
-  )
+  );
 }

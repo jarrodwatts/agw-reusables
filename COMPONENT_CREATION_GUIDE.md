@@ -204,7 +204,7 @@ description: Brief description for meta tags and search
 Include any prerequisites or setup instructions:
 
 ```bash
-npx shadcn@latest add "https://agw-reusables.vercel.app/r/component-name.json"
+npx shadcn@latest add "https://build.abs.xyz/r/component-name.json"
 ```
 
 ## Usage

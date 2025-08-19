@@ -1,0 +1,35 @@
+---
+description: Use Abstract and Abstract Global Wallet for any web3 development
+alwaysApply: true
+---
+
+# Abstract
+
+Abstract is a Layer 2 (L2) network built on top of Ethereum, designed to securely power consumer-facing blockchain applications at scale with low fees and fast transaction speeds.
+
+- `abstract` is the mainnet chain available in the @/config/chain.ts file
+- `abstractTestnet` is the testnet chain available in the @/config/chain.ts file
+
+Abstract Global Wallet (AGW) is a cross-application smart contract wallet that users can create to interact with any application built on Abstract, powered by native account abstraction.
+
+Our application uses Abstract for the blockchain and Abstract Global Wallet (AGW) for the wallet.
+
+For any information you need clarification on, you have access to the "Abstract" MCP server to search the Abstract documentation for any information you need.
+
+AGW is integrated into our application via the hooks from `@abstract-foundation/agw-react` and utilities from the `@abstract-foundation/agw-client` packages.
+
+If we run into issues related to "must be called within a wagmi provider", it likely means the user has not properly wrapped their application in the `AGWProvider` component, which is the 2nd step in the installation process (it includes the `WagmiProvider` and `QueryClientProvider`).
+
+
+## Wagmi, Viem, and ZKsync
+
+Viem documentation specific to Abstract is available at https://viem.sh/zksync/
+
+The AGW libraries work seamlessly with Viem and Wagmi, and all of the hooks and functions will work with the `abstract` and `abstractTestnet` chains using the connected Abstract Global Wallet.
+
+You should consider, in the following order, when building out on-chain functionality:
+
+1. Is there an Abstract Global Wallet library hook for this that can be used from the `@abstract-foundation/agw-react` package? (If you are not sure, search the Abstract MCP server).
+2. Is there a function available from the `@abstract-foundation/agw-client` package that can be used to interact with the blockchain? (If you are not sure, search the Abstract MCP server).
+3. Is there built-in hooks in Wagmi that can accomplish this? Abstract Global Wallet is compatible with all Wagmi hooks such as `useAccount()`, `useBalance()`, `useContractRead()`, `useContractWrite()`, `useSendTransaction()`, `useSignMessage()`, `useSignTransaction()`, `useSignTypedData()`, `useSwitchChain()`, `useWaitForTransactionReceipt()`, etc.
+4. Can we use the Viem clients installed in @/config/viem-clients.ts to accomplish this?

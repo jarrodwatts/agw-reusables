@@ -40,7 +40,7 @@ description: Brief, action-oriented description of what the component does
 [Prerequisites if any - link to required dependencies]
 
 ```bash
-npx shadcn@latest add "https://agw-reusables.vercel.app/r/component-name.json"
+npx shadcn@latest add "https://build.abs.xyz/r/component-name.json"
 ```
 
 [Additional setup steps if required]

@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "AGW Reusables",
-  url: "https://agw-reusables.vercel.app/",
-  ogImage: "https://agw-reusables.vercel.app/og.jpg",
+  url: "https://build.abs.xyz/",
+  ogImage: "https://build.abs.xyz/og.jpg",
   description:
     "A custom component registry built with shadcn/ui. Reusable components you can copy and paste into your apps.",
   links: {
@@ -14,9 +14,9 @@ export const siteConfig = {
       label: "Docs",
     },
   ],
-}
+};
 
 export const META_THEME_COLORS = {
   light: "#ffffff",
   dark: "#09090b",
-}
+};

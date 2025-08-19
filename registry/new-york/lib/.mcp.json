@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "abstract": {
-      "command": "npx",
-      "args": ["-y", "@abstractapi/mcp-server"]
-    }
-  }
-}

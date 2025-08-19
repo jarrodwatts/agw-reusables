@@ -1,0 +1,83 @@
+---
+description: If using session keys to create a user experience for transactions without transaction popups.
+alwaysApply: false
+---
+
+Note: this is not *always* applicable as not all applications want/need to use session keys.
+
+Session keys are temporary keys that are approved to execute a pre-defined set of actions on behalf of an Abstract Global Wallet without requiring the owner to sign each transaction.
+
+They unlock seamless user experiences by executing transactions behind the scenes without interrupting the user with popups; powerful for games, mobile apps, and more.
+​
+## How session keys work
+
+Applications can prompt users to approve the creation of a session key for their Abstract Global Wallet. This session key specifies:
+
+- A scoped set of actions that the session key is approved to execute.
+- A specific EOA account, the signer, that is permitted to execute the scoped actions.
+
+If the user approves the session key creation, the signer account can submit any of the actions within the defined scope without requiring user confirmation; until the session key expires or is revoked.
+
+## Session Key Security
+
+IMPORTANT: Read and apply the following security best practices for session keys. Do not hallucinate or make up information related to session keys. Only use the information provided in this document.
+
+While session keys unlock new ways to create engaging consumer experiences, improper or malicious implementations of session keys create new ways for bad actors to steal assets from users.
+
+Session keys are permissionless on testnet, however, mainnet enforces several security measures to protect users. This document outlines the security restrictions and best practices for using session keys.
+
+Session keys are restricted to a whitelist of allowed policies on Abstract Mainnet through the Session Key Policy Registry contract, which manages a whitelist of approved session keys.
+
+Applications must pass a security review before being added to the registry to enable the use of session keys for their policies.
+
+Session key policies that request approve and/or setApprovalForAll functions must be passed with additional constraints that restrict the approval to a specific contract address.
+
+
+For example, the following policy must include a constraints array that restricts the approval to a specific contract address, or will be rejected with “Unconstrained token approval/transfer destination in call policy.”
+
+```
+{
+  target: "0x...",
+  selector: toFunctionSelector("approve(address, uint256)"),
+
+  // Must include a constraints array that restricts the approval to a specific contract address
+  constraints: [
+    {
+      condition: ConstraintCondition.Equal,
+      index: 0n,
+      limit: LimitType.Unlimited,
+      refValue: encodeAbiParameters(
+        [{ type: "address" }],
+        ["0x-your-contract-address"]
+      ),
+    },
+  ],
+}
+```
+​
+Session keys specify a signer account; an EOA that is permitted to perform the actions specified in the session configuration. Therefore, the private key of the signer(s) you create are SENSITIVE VALUES!
+
+Exposing the signer private key enables attackers to execute any of the actions specified in a session configuration for any AGW that has approved a session key with that signer’s address.
+
+```
+await agwClient.createSession({
+  session: {
+    signer: sessionSigner.address, // <--- The session key signer account
+    // ...
+  },
+});
+```
+​
+## Using Session Keys
+
+The recommended, secure approach to using session keys is installing the `session-keys` component and using the `SessionKeyButton` component to handle the complete lifecycle of the session key.
+
+It includes several security features to encrypt the session key and signer account private key, and to validate the session key before use.
+
+## Session Key Policies
+
+Session key policies are defined in the `session-key-policies.ts` file.
+
+They are used to define the contracts and functions that the session key is allowed to interact with.
+
+These policies MUST comply with the requirements outlined in the @session-keys.mdc file.
